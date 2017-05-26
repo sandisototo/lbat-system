@@ -19,11 +19,11 @@ class Login extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index()
-	{	
+	{
 		$this->load->view('login/index');
 	}
 
-	public function validate_user()
+public function validate_user()
 {
 			$post_values = $this->input->post();
 
@@ -32,28 +32,24 @@ class Login extends CI_Controller {
 
 			$this->load->model('login_model', 'login');
 			$user = $this->login->validate_user($username,$password);
-			//print_r($user);die();
+
 			if(empty($user))
 			{
 					$data = array('value' => "notFound");
-					echo json_encode($data);die();
+					echo json_encode($data); die();
 			}
 			else
 			{
 				$name = $user['name'];
 				$surname = $user['surname'];
-				$is_helper = $user['user_type'];
 				$cell_number = $user['cell_number'];
 
-				//die($status);
 				$data = array('user_id' => $user['id'],
 						'is_logged_in' => true,
-						'is_helper'=>$is_helper,
 						'name'=>$name,
 						'surname'=>$surname,
 					  'cell_number' => $cell_number);
 
-				//print_r(	$data );die();
 				$this->session->set_userdata('user', $data);
 				echo json_encode($data);die();
 			}

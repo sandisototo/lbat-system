@@ -32,12 +32,12 @@
       </ul>
       <div class="tab-content tabs-login col-lg-12 col-md-12 col-sm-12 cols-xs-12">
         <div id="login-access" class="tab-pane fade active in">
-          <h2><i class="glyphicon glyphicon-log-in"></i> LBAT system </h2>           
-          <form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal" 
+          <h2><i class="glyphicon glyphicon-log-in"></i> LBAT system </h2>
+          <form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal"
           ng-submit="login()">
             <div class="form-group ">
               <label for="login" class="sr-only">Username</label>
-                <input type="text" class="form-control" name="username" id="login_value" 
+                <input type="text" class="form-control" name="username" id="login_value"
                   placeholder="Username" tabindex="1" value=""  ng-model="user.username"/>
             </div>
             <div class="form-group ">
@@ -52,11 +52,11 @@
             </div>
             <br/>
             <pre style="background-color: #ff8d8d;" ng-show="errorMessage">{{errorMessage}}</pre>
-    
-            <div class="form-group ">       
+
+            <div class="form-group ">
                 <button type="submit" name="log-me-in" id="submit" tabindex="5" class="btn btn-lg">Enter</button>
             </div>
-          </form>     
+          </form>
         </div>
       </div>
     </section>
@@ -69,12 +69,15 @@
     moment().format();
 </script>
 <script type="text/javascript" src="<?php echo base_url();?>js/jquery-2.2.3.min.js"></script>
+<script src="<?php echo base_url();?>js/data-tables.js"></script>
+<script src="<?php echo base_url();?>js/angular/angular-datatables.min.js"></script>
 <script src="<?php echo base_url();?>js/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <script src="<?php echo base_url();?>js/core/register.js"></script>
 <script src="<?php echo base_url();?>js/core/login.js"></script>
-<script src="<?php echo base_url();?>js/core/helper.js"></script>
-<script src="<?php echo base_url();?>js/core/getter.js"></script>
 <script src="<?php echo base_url();?>js/core/admin.js"></script>
+<script src="<?php echo base_url();?>js/core/members.js"></script>
+<script src="<?php echo base_url();?>js/core/payments.js"></script>
+<script src="<?php echo base_url();?>js/core/messages.js"></script>
 <script src="<?php echo base_url();?>js/core/main.js"></script>
 <script src="<?php echo base_url();?>js/bootstrap.min.js" crossorigin="anonymous"></script>
 <script src="<?php echo base_url();?>js/main.js"></script>

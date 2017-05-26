@@ -1,24 +1,21 @@
 <?php
 
-class Helper_model extends CI_Model {
+class Payments_model extends CI_Model {
 
 	function __construct()
 	{
 		parent::__construct();
 	}
 
-	function get_all_getters()
+	function get_all_users()
 	{
 		$q = $this
 		->db
-		->select('user.id, user.name,user.surname,user.cell_number,user_status.user_type, user_status.amount_expected, user_status.timestamp, account.account_number, account.account_type, account.account_holder, account.bank, account.branch_code ')
-		->from('user_status')
-		->join('user', 'user.id = user_status.user_id', 'left')
-    ->join('account', 'account.user_id = user.id', 'left')
-		->where('user_status.tranction_status', 0)
+		->select('*')
+		->from('user')
 		->get()
 		->result_array();
-		//echo $this->db->last_query(); die();
+		// echo $this->db->last_query(); die();
 	   return $q;
 	}
 

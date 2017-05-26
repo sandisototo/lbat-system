@@ -5,7 +5,7 @@
     <title>LBAT System</title>
     <!-- Force IE to turn off past version compatibility mode and use current version mode -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1">
-    
+
     <!-- Get the width of the users display-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -31,7 +31,7 @@
             $surname = $user_data['surname'];
             $cell_number = $user_data['cell_number'];
         ?>
- 
+
 <center>
 <table width="960px" id="TixManagementContent" class="TixManagementContent" >
 <tbody>
@@ -39,8 +39,8 @@
 <td align="left">
 <div class="boxed-page">
 
- 
-<div class="container">
+
+<div class="container" ng-controller="MainController">
     <nav class="navbar navbar-default" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -53,15 +53,15 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span>Home</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-calendar"></span>Payments</a></li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                <li ng-class="{ active: isActivePath('site') }"><a href="<?php echo base_url();?>site"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+                <li ng-class="{ active: isActivePath('payments') }"><a href="<?php echo base_url();?>payments"><span class="glyphicon glyphicon-calendar"></span>Payments</a></li>
+                <li ng-class="{ active: isActivePath('members')}" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                     class="glyphicon glyphicon-list-alt"></span>Member Management <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?php echo base_url();?>"><span class="glyphicons glyphicons-parents"></span>
+                        <li><a href="<?php echo base_url();?>members"><span class="glyphicons glyphicons-parents"></span>
                         View All Members </a></li>
                         <li class="divider"></li>
-                        <li><a href="<?php echo base_url();?>"><span class="glyphicon glyphicon-plus"></span>
+                        <li><a href="<?php echo base_url();?>members/add"><span class="glyphicon glyphicon-plus"></span>
                         Add New Member </a></li>
                     </ul>
                 </li>
@@ -87,27 +87,13 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-comment"></span>Chats <span class="label label-primary">42</span>
+                <li class="dropdown" ng-class="{ active: isActivePath('messages') || isActivePath('sent') }"><a href="<?php echo base_url();?>messages" class="dropdown-toggle" data-toggle="dropdown"><span
+                    class="glyphicon glyphicon-envelope"></span>Messaging
                 </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="label label-warning">7:00 AM</span>Hi :)</a></li>
-                        <li><a href="#"><span class="label label-warning">8:00 AM</span>How are you?</a></li>
-                        <li><a href="#"><span class="label label-warning">9:00 AM</span>What are you doing?</a></li>
+                        <li><a href="<?php echo base_url();?>messages"><span class="glyphicon glyphicon-send"></span> Send New Message</a></li>
                         <li class="divider"></li>
-                        <li><a href="#" class="text-center">View All</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-envelope"></span>Inbox <span class="label label-info">32</span>
-                </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><span class="label label-warning">4:00 AM</span>Favourites Snippet</a></li>
-                        <li><a href="#"><span class="label label-warning">4:30 AM</span>Email marketing</a></li>
-                        <li><a href="#"><span class="label label-warning">5:00 AM</span>Subscriber focused email
-                            design</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" class="text-center">View All</a></li>
+                        <li><a href="<?php echo base_url();?>messages/sent"><span class="glyphicon glyphicon-eye-open"></span> View Sent Messages</a></li>
                     </ul>
                 </li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
@@ -131,7 +117,7 @@
       <p style="display:none" ng-init="user_surname='<?php echo $surname; ?>'">
       </p>
       <p style="display:none" ng-init="cell_number='<?php echo $cell_number; ?>'">
-      </p> 
+      </p>
 
 </div>
 </td>
@@ -139,4 +125,3 @@
 </tbody>
 </table>
 </center>
-

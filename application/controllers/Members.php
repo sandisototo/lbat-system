@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Helper extends CI_Controller {
+class Members extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -29,7 +29,6 @@ class Helper extends CI_Controller {
 
 	 private function _is_logged_in(){
 		 $this->load->model('admin_model', 'admin');
- 		 $users = $this->admin->update_transaction_status();
 		 $user_session = $this->session->get_userdata();
 		 $user_data = $user_session['user'];
 		 $is_logged_in = $user_data['is_logged_in'];
@@ -41,8 +40,7 @@ class Helper extends CI_Controller {
 	{
 		$user_session = $this->session->get_userdata();
 		$user_data = $user_session['user'];
-		//print_r($user_data);
-		$this->load->view('helper/index');
+		$this->load->view('members/index');
 	}
 	public function transactions()
 	{

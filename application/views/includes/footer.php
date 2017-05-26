@@ -9,22 +9,24 @@
     </div>
 </center>
 </div>
+<script type="text/javascript" src="<?php echo base_url();?>js/jquery-2.2.3.min.js"></script>
 <script data-require="angular.js@*" data-semver="1.3.4" src="<?php echo base_url();?>js/angular/angular.js"></script>
 <script data-require="ui-bootstrap@*" data-semver="0.12.0" src="<?php echo base_url();?>js/angular-bootstrap/ui-bootstrap.js"></script>
 <script data-require="ui-bootstrap@*" data-semver="0.12.0" src="<?php echo base_url();?>js/moment/moment.js"></script>
 <script>
     moment().format();
 </script>
-<script type="text/javascript" src="<?php echo base_url();?>js/jquery-2.2.3.min.js"></script>
+<script src="<?php echo base_url();?>js/data-tables.js"></script>
+<script src="<?php echo base_url();?>js/angular/angular-datatables.min.js"></script>
+<script src="<?php echo base_url();?>js/bootstrap.min.js" crossorigin="anonymous"></script>
 <script src="<?php echo base_url();?>js/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <script src="<?php echo base_url();?>js/angular-spinners/dist/angular-spinners.min.js"></script>
 <script src="<?php echo base_url();?>js/core/register.js"></script>
 <script src="<?php echo base_url();?>js/core/login.js"></script>
-<script src="<?php echo base_url();?>js/core/helper.js"></script>
-<script src="<?php echo base_url();?>js/core/getter.js"></script>
 <script src="<?php echo base_url();?>js/core/admin.js"></script>
+<script src="<?php echo base_url();?>js/core/payments.js"></script>
+<script src="<?php echo base_url();?>js/core/members.js"></script>
+<script src="<?php echo base_url();?>js/core/messages.js"></script>
 <script src="<?php echo base_url();?>js/core/main.js"></script>
-<script src="<?php echo base_url();?>js/bootstrap.min.js" crossorigin="anonymous"></script>
-<script src="<?php echo base_url();?>js/main.js"></script>
 </body>
 </html>

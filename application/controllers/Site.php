@@ -30,7 +30,6 @@ class Site extends CI_Controller {
 
 	 private function _is_logged_in(){
 		$this->load->model('admin_model', 'admin');
- 		$users = $this->admin->update_transaction_status();
 		 $user_session = $this->session->get_userdata();
 		 $user_data = $user_session['user'];
 		 $is_logged_in = $user_data['is_logged_in'];

@@ -31,13 +31,10 @@ angular.module("login",['register', 'toastr'])
        $scope.DisplayToast(toastr.error, "Error", $scope.errorMessage);
      } else {
        // if successful, bind success message to message
-       if(!data.is_helper){
-         $window.location.href = SharedProperties.link +'helper';
-       }else{
-         $window.location.href = SharedProperties.link +'site';
-       }
-       $scope.errorMessage = "Log in successful!";
-       $scope.DisplayToast(toastr.success, "Success", $scope.errorMessage);
+      $window.location.href = SharedProperties.link +'site';
+       
+      $scope.errorMessage = "Log in successful!";
+      $scope.DisplayToast(toastr.success, "Success", $scope.errorMessage);
 			 //$window.location.href = SharedProperties.link +'/helper';
      }
    });
