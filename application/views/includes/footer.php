@@ -20,7 +20,7 @@
 <script src="<?php echo base_url();?>js/angular/angular-datatables.min.js"></script>
 <script src="<?php echo base_url();?>js/bootstrap.min.js" crossorigin="anonymous"></script>
 <script src="<?php echo base_url();?>js/angular-toastr/dist/angular-toastr.tpls.js"></script>
-<script src="<?php echo base_url();?>js/angular-spinners/dist/angular-spinners.min.js"></script>
+<script src="<?php echo base_url();?>js/angular-busy/dist/angular-busy.js"></script>
 <script src="<?php echo base_url();?>js/core/register.js"></script>
 <script src="<?php echo base_url();?>js/core/login.js"></script>
 <script src="<?php echo base_url();?>js/core/admin.js"></script>

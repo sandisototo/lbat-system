@@ -10,7 +10,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                  <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%" datatable="ng" style="background-color: darkgray;">
+                  <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%" datatable="ng">
                     <thead>
                       <tr>
                         <th>
@@ -42,8 +42,9 @@
                         <th> X Completely?</th>
                       </tr>
                     </tfoot>
-
+                      <div cg-busy="usersPromise"></div>
                     <tbody>
+
                       <tr dt-rows ng-repeat="(i, user) in all_users">
                         <td>
                           {{i+1}}

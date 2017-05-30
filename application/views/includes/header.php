@@ -17,7 +17,8 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap-theme.min.css" crossorigin="anonymous">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
-  <link rel="stylesheet" href='<?php echo base_url();?>js/angular-toastr/dist/angular-toastr.css'></link>
+<link rel="stylesheet" href='<?php echo base_url();?>js/angular-toastr/dist/angular-toastr.css'></link>
+<link rel="stylesheet" href='<?php echo base_url();?>js/angular-busy/dist/angular-busy.css'></link>
 <!-- Latest compiled and minified JavaScript -->
 
 </head>
