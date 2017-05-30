@@ -31,7 +31,6 @@ angular.module("messages",['toastr'])
     }
   }
   $scope.sendBroadCustMassageToAll = (users, message) => {
-    console.log('all_user_count Bf ', $scope.all_user_count )
     const userWithContacts = $filter('filter')(users, (user) =>
     user.cell_number !== ''
     && user.cell_number.replace(/\s/g, '').length === 9
@@ -48,17 +47,14 @@ angular.module("messages",['toastr'])
           }
           recipients.push(user.cell_number)
    })
-console.log('message --->', message)
-return false
+
    // Construct SMS
    let sms = {
-     messages:[
-      {
+     messages: [{
          from: 'Luvuyo Burial Society',
          to: recipients,
 		     text : message
-          }
-      ]
+        }]
    }
 
    $http({
@@ -71,15 +67,14 @@ return false
         'Accept': 'application/json',
        }, // set the headers so angular passing info as form data (not request payload)
       })
-      .then(
-        (response) => {
-        console.log('Yes response--->', response)
+      .then((response) => {
+        console.log('response--->', response)
         $scope.errorMessage = 'A broadcust message was sent successfully!'
         $scope.DisplayToast(toastr.success, 'Success', $scope.errorMessage)
         //$window.location.href = `${SharedProperties.link}messages`)
       },
       (error) => {
-        console.log('No error--->', error)
+        console.log('error--->', error)
         $scope.errorMessage = 'Couldnt send a broadcust message!'
         $scope.DisplayToast(toastr.error, 'Error', $scope.errorMessage)
       })

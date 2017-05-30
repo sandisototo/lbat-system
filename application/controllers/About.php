@@ -18,10 +18,8 @@ class About extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
-	{
+	public function index() {
 		$this->load->model('admin_model', 'admin');
-		$users = $this->admin->update_transaction_status();
 		$this->load->view('about/index');
 	}
 }

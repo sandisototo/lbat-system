@@ -19,89 +19,22 @@ class Site extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 
-	 public function __construct()
-	 {
-
-		 parent::__construct();
-
-		 $this->_is_logged_in();
-
+	 public function __construct() {
+ 	 	parent::__construct();
+		$this->_is_logged_in();
 	 }
 
-	 private function _is_logged_in(){
+	 private function _is_logged_in() {
 		$this->load->model('admin_model', 'admin');
-		 $user_session = $this->session->get_userdata();
-		 $user_data = $user_session['user'];
-		 $is_logged_in = $user_data['is_logged_in'];
-		 if(!isset($is_logged_in) || $is_logged_in != true){
-			 redirect('logout');
-		 }
+		$user_session = $this->session->get_userdata();
+		$user_data = $user_session['user'];
+		$is_logged_in = $user_data['is_logged_in'];
+		if(!isset($is_logged_in) || $is_logged_in != true){
+			redirect('logout');
+		}
 	 }
 
-	public function index()
-	{
+	 public function index() {
 		$this->load->view('index');
-	}
-
-	public function get_getter_count(){
-		$user_session = $this->session->get_userdata();
-		$user_data = $user_session['user'];
-		$user_id = $user_data['user_id'];
-
-		$this->load->model('site_model', 'site');
-		$getter_count = (int)$this->site->get_all_getter_count($user_id);
-		if($getter_count >= 0){
-			$data = array('status' => true,
-										'message' => 'Getter Counter returned successfully!',
-										'count' => $getter_count
-									);
-		}else{
-			$data = array('status' => false,
-										'message' => 'Error trying to retrieve getter counter.'
-									);
-		}
-		echo json_encode($data);die();
-	}
-
-	public function get_helper_count(){
-		$user_session = $this->session->get_userdata();
-		$user_data = $user_session['user'];
-		$user_id = $user_data['user_id'];
-
-		$this->load->model('site_model', 'site');
-		$helper_count = (int)$this->site->get_all_herlper_count($user_id);
-		if($helper_count >= 0){
-			$data = array('status' => true,
-										'message' => 'Helper Counter returned successfully!',
-										'count' => $helper_count
-									);
-		}else{
-			$data = array('status' => false,
-										'message' => 'Error trying to retrieve helper counter.'
-									);
-		}
-
-		echo json_encode($data);die();
-	}
-
-	public function get_my_reward_count(){
-		$user_session = $this->session->get_userdata();
-		$user_data = $user_session['user'];
-		$user_id = $user_data['user_id'];
-
-		$this->load->model('site_model', 'site');
-		$helper_count = (int)$this->site->get_my_reward_count($user_id);
-		if($helper_count >= 0){
-			$data = array('status' => true,
-										'message' => 'Reward Counter returned successfully!',
-										'count' => $helper_count
-									);
-		}else{
-			$data = array('status' => false,
-										'message' => 'Error trying to retrieve reward counter.'
-									);
-		}
-
-		echo json_encode($data);die();
-	}
+	 }
 }

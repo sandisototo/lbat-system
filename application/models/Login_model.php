@@ -2,13 +2,11 @@
 
 class Login_model extends CI_Model {
 
-	function __construct()
-	{
+	function __construct() {
 		parent::__construct();
 	}
 
-	function validate_user($username,$password)
-	{
+	function validate_user($username,$password) {
 		//$encrypted = md5($password);
 		$q = $this
 		->db
@@ -18,7 +16,6 @@ class Login_model extends CI_Model {
 		->where('password', $password)
 		->get()
 		->row_array();
-	   return $q;
+	  return $q;
 	}
-
 }

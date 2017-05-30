@@ -18,18 +18,13 @@ class User extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	 public function __construct()
-	 {
-
+	 public function __construct() {
 		 parent::__construct();
-
-		 //$this->_is_logged_in();
-
+		 $this->_is_logged_in();
 	 }
 
-	 private function _is_logged_in(){
-		$this->load->model('admin_model', 'admin');
- 		$users = $this->admin->update_transaction_status();
+	 private function _is_logged_in() {
+		 $this->load->model('admin_model', 'admin');
 		 $user_session = $this->session->get_userdata();
 		 $user_data = $user_session['user'];
 		 $is_logged_in = $user_data['is_logged_in'];
@@ -38,16 +33,9 @@ class User extends CI_Controller {
 		 }
 	 }
 
-		public function index()
-		{
-
-		}
-
-	
-		public function register_user()
-		{
+	 public function register_user() {
 			$post_values = $this->input->post();
-			//print_r($post_values);die();
+
 			$name = $post_values['name'];
 			$surname = $post_values['surname'];
 			$cell_number = $post_values['cell_number'];
@@ -60,39 +48,31 @@ class User extends CI_Controller {
 			$accout_type = $post_values['account_type'];
 			$account_holder = $post_values['account_holder'];
 			$bank = $post_values['bank_name'];
-			$branch_code = $post_values['bank_code'];																																																																																															
+			$branch_code = $post_values['bank_code'];
 
 			$account_number = $post_values['account_number'];
 			$this->load->model('user_model', 'user');
 			if(!empty($email) && !empty($refferal_number)){
 				$user_id = $this->user->new_user_emal_ref($name,$surname,$cell_number,$gender,$email,$refferal_number,$password,$username);
-			
 			}
-			elseif(!empty($refferal_number)) {
+			elseif (!empty($refferal_number)) {
 				$user_id = $this->user->new_user_ref($name,$surname,$cell_number,$gender,$refferal_number,$password,$username);
-			
-			}
-			elseif (!empty($email)) {
+			} elseif (!empty($email)) {
 				$user_id = $this->user->new_user_emal($name,$surname,$cell_number,$gender,$email,$password,$username);
-			
-			}
-			else{ 
+			} else {
 				$user_id = $this->user->new_user($name,$surname,$cell_number,$gender,$password,$username);
-			
 			}
-			if(!empty($user_id))
-			{
+
+			if (!empty($user_id)) {
 					$account = $this->user->new_account($user_id,$bank,$branch_code,$account_holder,$account_number,$accout_type);
 					echo json_encode($account);die();
-			}
-			else
+			} else
 			$data = array('value' => "user not registered");
-					echo json_encode($data);die();
-		}
 
-  public function register()
-  {
+			echo json_encode($data);die();
+	}
+
+  public function register() {
     $this->load->view('login/register');
   }
-
 }
