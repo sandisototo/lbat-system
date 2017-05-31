@@ -72,6 +72,7 @@
 <script src="<?php echo base_url();?>js/data-tables.js"></script>
 <script src="<?php echo base_url();?>js/angular/angular-datatables.min.js"></script>
 <script src="<?php echo base_url();?>js/angular-toastr/dist/angular-toastr.tpls.js"></script>
+<script src="<?php echo base_url();?>js/angular-busy/dist/angular-busy.js"></script>
 <script src="<?php echo base_url();?>js/core/register.js"></script>
 <script src="<?php echo base_url();?>js/core/login.js"></script>
 <script src="<?php echo base_url();?>js/core/admin.js"></script>
