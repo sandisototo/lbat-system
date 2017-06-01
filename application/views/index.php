@@ -52,7 +52,7 @@
 		        </div>
 		      </div>
 		</div>
-	      
+
 	     <div class="col-xs-12 col-sm-9">
 	                       <div class="panel panel-default">
 	                           <div class="panel-heading">
@@ -70,17 +70,17 @@
 	                               Lapsed Accounts *
 	                           </div>
 	                           <div class="panel-body">
-										                           		
+
 											<!-- Stat-->
 											      <div class="circle-tile ">
-											        
+
 											        <div class="circle-tile-content gray">
 											          <div class="circle-tile-description text-faded"> Lapsed Member</div>
 											          <div class="circle-tile-number text-faded ">5</div>
 											          <a class="circle-tile-footer" href="#">More Info <i class="fa fa-chevron-circle-right"></i></a>
 											        </div>
 											      </div>
-		
+
 	                           </div>
 	                       </div>
 	                       	                       <div class="panel panel-default">

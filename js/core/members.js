@@ -3,6 +3,7 @@ angular.module("members",['toastr','datatables', 'cgBusy'])
   console.debug('<----Members Controller----->')
 
   $scope.all_user_count = 0
+  $scope.loading_message = 'Please wait....'
 	$scope.get_all_users = () => {
 		 $scope.usersPromise = $http.get(`${SharedProperties.link}payments/get_all_users`)
 		.success(function (data) {

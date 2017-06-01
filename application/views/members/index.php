@@ -2,12 +2,11 @@
   $this->load->view('includes/header');
 ?>
 <link rel="stylesheet" href="<?php echo base_url();?>css/data-tables.css">
-
 <div class="container" ng-controller="MembersController">
+  <div cg-busy="{promise:usersPromise,templateUrl:'<?php echo base_url();?>templates/loading.html'}"></div>
 	<div class="row">
 		<h2 class="text-center">LBAT Member Management</h2>
 	</div>
-
         <div class="row">
             <div class="col-md-12">
                   <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%" datatable="ng">
@@ -42,9 +41,7 @@
                         <th> X Completely?</th>
                       </tr>
                     </tfoot>
-                      <div cg-busy="usersPromise"></div>
                     <tbody>
-
                       <tr dt-rows ng-repeat="(i, user) in all_users">
                         <td>
                           {{i+1}}

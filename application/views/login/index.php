@@ -22,7 +22,6 @@
     <h1 class="section-header"> Luvuyo Burial <span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s"> Administration Tool</span></h1>
         <h3>Member Managent, Reporting, Schecduling and Notification System</h3>
     </div>
-
 <div class="login-body" style="margin-top: 10%;" ng-controller="LoginController">
     <article class="container-login center-block">
       <section>
