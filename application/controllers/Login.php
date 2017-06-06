@@ -32,23 +32,23 @@ class Login extends CI_Controller {
 		$user = $this->login->validate_user($username,$password);
 
 		if (empty($user)) {
-				$data = array('value' => "notFound");
-				echo json_encode($data); die();
+			 $data = array('error' => "User Not Found");
+			 echo json_encode($data);
 			} else {
 				$name = $user['name'];
 				$surname = $user['surname'];
 				$cell_number = $user['cell_number'];
 
 				$data = array(
+					'user' => $user,
 					'user_id' => $user['id'],
 					'is_logged_in' => true,
-					'name'=>$name,
-					'surname'=>$surname,
+					'name' => $name,
+					'surname' => $surname,
 					'cell_number' => $cell_number
 				);
-
 				$this->session->set_userdata('user', $data);
-				echo json_encode($data);die();
+				echo json_encode($data);
 			}
 	}
 
@@ -62,13 +62,14 @@ class Login extends CI_Controller {
 		$user = $this->admin->validate_user($username,$password);
 
 		if (empty($user)) {
-			$data = array('value' => "notFound");
-			echo json_encode($data);die();
+			$data = array('error' => "User Not Found");
+			echo json_encode($data);
 		} else {
 			$name = $user['name'];
 			$surname = $user['surname'];
 
 			$data = array(
+				'admin' => $user,
 				'admin_id' => $user['id'],
 				'is_logged_in' => true,
 				'name'=>$name,
@@ -77,7 +78,7 @@ class Login extends CI_Controller {
 				$this->session->unset_userdata('user');
 				$this->session->set_userdata('admin', $data);
 
-				echo json_encode($data);die();
+				echo json_encode($data);
 			}
 	}
 

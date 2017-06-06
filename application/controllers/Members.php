@@ -39,15 +39,45 @@ class Members extends CI_Controller {
 		$this->load->view('members/index');
 	}
 
+	//All members
+	public function all() {
+		$this->load->model('members_model', 'members');
+		$members = $this->members->all();
+		echo json_encode($members);
+	}
+
 	// add member
 	public function add_member() {}
 
 	// edit member
-	public function edit_member() {}
+	public function edit() {
+		// Check if posted values are not null
+		if (empty($this->input->post())) {
+			echo json_encode(array('error' => "Missing input post data"));
+		}
+		// Take id
+		$member_id = $this->input->post('id');
+		// Then clean up data before posting
+		$mysql_data = $this->cunstruct_mysql_data($this->input->post());
+
+		$this->load->model('members_model', 'members');
+
+		$updated = $this->members->edit($member_id, $mysql_data);
+		echo json_encode($updated);
+	}
 
 	// remove member
 	public function remove_member() {}
 
 	// Change a users policy status 0 = lapse 1 = active
 	public function mark_as_lapsed() {}
+
+	private function cunstruct_mysql_data($array) {
+		// Then remove id from the list of columns to be updated
+		array_shift($array);
+		// remove other uneccessary keys
+		array_splice($array, 15);
+
+		return $array;
+	}
 }

@@ -37,12 +37,12 @@
             <div class="form-group ">
               <label for="login" class="sr-only">Username</label>
                 <input type="text" class="form-control" name="username" id="login_value"
-                  placeholder="Username" tabindex="1" value=""  ng-model="user.username"/>
+                  placeholder="Username" tabindex="1" value=""  ng-model="user.username" required/>
             </div>
             <div class="form-group ">
               <label for="password" class="sr-only">Password</label>
                 <input type="password" class="form-control" name="password" id="password"
-                  placeholder="Password" value="" tabindex="2" ng-model="user.password"/>
+                  placeholder="Password" value="" tabindex="2" ng-model="user.password" required/>
             </div>
             <div class="checkbox">
                 <label class="control-label" for="remember_me">
