@@ -13,7 +13,7 @@
         <a href="#"><div class="circle-tile-heading purple"><i class="fa fa-users fa-fw fa-3x"></i></div></a>
         <div class="circle-tile-content purple">
           <div class="circle-tile-description text-faded"> Total Members </div>
-          <div class="circle-tile-number text-faded ">2740</div>
+          <div class="circle-tile-number text-faded ">4640</div>
           <a class="circle-tile-footer" href="#">More Info <i class="fa fa-chevron-circle-right"></i></a>
         </div>
       </div>
@@ -25,7 +25,7 @@
 	        <a href="#"><div class="circle-tile-heading green"><i class="fa fa-users fa-fw fa-3x"></i></div></a>
 	        <div class="circle-tile-content green">
 	          <div class="circle-tile-description text-faded"> Active Members</div>
-	          <div class="circle-tile-number text-faded ">2665</div>
+	          <div class="circle-tile-number text-faded ">4639</div>
 	          <a class="circle-tile-footer" href="#">More Info <i class="fa fa-chevron-circle-right"></i></a>
 	        </div>
 	      </div>
@@ -76,7 +76,7 @@
 
 											        <div class="circle-tile-content gray">
 											          <div class="circle-tile-description text-faded"> Lapsed Member</div>
-											          <div class="circle-tile-number text-faded ">5</div>
+											          <div class="circle-tile-number text-faded ">1s</div>
 											          <a class="circle-tile-footer" href="#">More Info <i class="fa fa-chevron-circle-right"></i></a>
 											        </div>
 											      </div>

@@ -22,9 +22,12 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
 .factory('membersFactory', ['$http', 'baseUrl', 'headers', function($http, baseUrl, headers) {
   console.debug('membersFactory Running')
   let membersFactory = {}
-
+  membersFactory.getMember = (id) => $http.get(`${baseUrl}members/get/${id}`)
   membersFactory.getAllMembers = () => $http.get(`${baseUrl}members/all`)
   membersFactory.editMember = (member) => $http.post(`${baseUrl}members/edit`, $.param(member), headers)
+  membersFactory.addMember = (member) => $http.post(`${baseUrl}members/add`, $.param(member), headers)
+  membersFactory.addDepandant = (depandant) => $http.post(`${baseUrl}members/add_depandant`, $.param(depandant), headers)
+  membersFactory.getDepandants = (id) => $http.get(`${baseUrl}members/get_depandants/${id}`)
   return membersFactory
 }])
 .factory('exrasFactory', ['$http', 'toastr', function($http, toastr) {
@@ -39,10 +42,14 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
       'positionClass': 'toast-bottom-left'
     })
   }
+
   return exrasFactory
 }])
-
-.controller('MainController', ['$scope', '$window', function($scope, $window) {
-  console.debug('MainController Running')
-  $scope.isActivePath = (viewLocation) => viewLocation === $window.location.href.substr(window.location.href.lastIndexOf('/') + 1)
-}])
+.controller('MainController', ['$scope', '$window', 'baseUrl',
+  function($scope, $window, baseUrl) {
+    console.debug('MainController Running')
+    $scope.isActivePath = (viewLocation) => viewLocation === $window.location.href.substr(window.location.href.lastIndexOf('/') + 1)
+    $scope.redirect = (route) => $window.location.href = `${baseUrl}${route}`
+    $scope.formatDate = (date) => new Date(date)
+  }
+])

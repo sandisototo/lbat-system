@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html >
 
 <head>
     <title>LBAT System</title>
@@ -22,7 +22,7 @@
 <!-- Latest compiled and minified JavaScript -->
 
 </head>
-<body ng-app="starterApp">
+<body ng-app="starterApp" ng-controller="MainController">
 
         <?php
             $user_session = $this->session->get_userdata();
@@ -41,7 +41,7 @@
 <div class="boxed-page">
 
 
-<div class="container" ng-controller="MainController">
+<div class="container">
     <nav class="navbar navbar-default" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
