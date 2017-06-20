@@ -3,8 +3,8 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   $log.debug('MyApp is ready!')
 })
 .provider('baseUrl', function () {
-  const enviroment = 'dev'
-  this.$get = () => enviroment === 'dev' ? 'http://localhost/lbat/' : 'http://fintechrewards.co.za/'
+  const enviroment = 'staging'
+  this.$get = () => enviroment === 'dev' ? 'http://localhost/lbat/' : 'http://demo.luvuyoburial.co.za/'
 })
 .provider('headers', function () {
     this.$get = () => {
