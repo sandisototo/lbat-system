@@ -26,21 +26,77 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     })
 	}
 
+  // Show edit member dialogue
   $scope.showEditMember = (member, index) => {
     $scope.selected_index = index
     $scope.selected_member = member
-
-    // get first 6 digits as a valid date
-   let tempDate = new Date(member.id_number.substring(0, 2), member.id_number.substring(2, 4), member.id_number.substring(4, 6));
-
-   let id_date = tempDate.getDate()
-   let id_month = moment.months(tempDate.getMonth() - 1)
-   let id_year = tempDate.getFullYear()
-   $scope.dob = `${id_date} ${id_month} ${id_year}`
-
-   //Get member dependents
-   $scope.getDepandants(member.id);
+    $scope.dob = exrasFactory.dob(member.id_number)
+    //Get member dependents
+    $scope.getDepandants(member.id)
   }
+
+  // Show edit depandant dialogue
+  $scope.showEditDepandant = (depandant, index) => {
+    console.log(depandant)
+    $scope.selected_depandant_index = index
+    $scope.selected_depandant = depandant
+    $scope.dob = exrasFactory.dob(depandant.id_number)
+  }
+
+  // remove member
+  $scope.removeMember = (member_id) => {
+    $scope.usersPromise = membersFactory.removeMember(member_id)
+    .then((response) => response.data)
+    .then((data) => {
+      if (!data) {
+        exrasFactory.displayToast(toastr.error, "Error", "Could not remove this record! Please try again later.")
+        return
+      }
+      if($scope.selected_index !== -1) {
+        $scope.all_members.splice($scope.selected_index, 1)
+        $scope.selected_index = -1
+        exrasFactory.displayToast(toastr.success, "Success", "Member removed successfully!")
+      }
+
+    },
+    (error) => {
+      console.log('error--->', error)
+      exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
+    })
+  }
+
+  // remove depandant
+  $scope.removeDepandant = (member_id, depandant_id) => {
+    $scope.usersPromise = membersFactory.removeDepandant(member_id, depandant_id)
+    .then((response) => response.data)
+    .then((data) => {
+      if (!data) {
+        exrasFactory.displayToast(toastr.error, "Error", "Could not remove this record! Please try again later.")
+        return
+      }
+      if($scope.selected_depandant_index !== -1) {
+        $scope.depandants_list.splice($scope.selected_depandant_index, 1)
+        $scope.selected_depandant_index = -1
+        exrasFactory.displayToast(toastr.success, "Success", "Depandant removed successfully!")
+      }
+
+    },
+    (error) => {
+      console.log('error--->', error)
+      exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
+    })
+  }
+  // confirm remove member
+  $scope.confirmRemoveMember = (member, index) => {
+    $scope.selected_index = index
+    $scope.selected_member = member
+  }
+  // confirm remove depandant
+  $scope.confirmRemoveDepandant = (depandant, index) => {
+    $scope.selected_depandant_index = index
+    $scope.selected_depandant = depandant
+  }
+
 
   // edit/update a given member object
   $scope.editMember = (member) => {
@@ -61,7 +117,31 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
 
     },
     (error) => {
-      debag.log('error--->', error)
+      console.log('error--->', error)
+      exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
+    })
+  }
+
+  // edit/update a given depandant object
+  $scope.editDepandant = (depandant) => {
+    if (!$scope.editDepInputForm.$valid) {
+      exrasFactory.displayToast(toastr.error, "Error", "Name, Surname or ID number cannot be left blank. Please re-open and and edit again.")
+      return false
+    }
+
+    $scope.usersPromise = membersFactory.editDepandant(depandant)
+    .then((response) => response.data)
+    .then((data) => {
+      if (!data) {
+        exrasFactory.displayToast(toastr.error, "Error", "Could not update this record! Make sure all required fields are filled.")
+        return
+      }
+
+      exrasFactory.displayToast(toastr.success, "Success", "Record updated successfully!")
+
+    },
+    (error) => {
+      console.log('error--->', error)
       exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
     })
   }
@@ -80,15 +160,17 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
         exrasFactory.displayToast(toastr.error, "Error", "Could not add this record! Make sure all required fields are filled.")
         return
       }
+      new_member.timestamp = new Date()
+      new_member.policy_status = 1
 
+      $scope.all_members.push(new_member)
+      $scope.new_member = {}
       exrasFactory.displayToast(toastr.success, "Success", "Record added successfully!")
-
     },
     (error) => {
-      debag.log('error--->', error)
+      console.log('error--->', error)
       exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
     })
-    new_member = {}
   }
   // add depandants to a given member object
   $scope.addDepandant = (dependant) => {
@@ -104,7 +186,8 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
         exrasFactory.displayToast(toastr.error, "Error", "Could not add this record! Make sure all required fields are filled.")
         return
       }
-      $scope.dependents_list.push(dependant)
+      $scope.depandants_list.push(dependant)
+      $scope.new_dependent = {}
       exrasFactory.displayToast(toastr.success, "Success", "Record added successfully!")
     },(error) => {
       exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
@@ -119,7 +202,7 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
       if (!data) {
         return
       }
-      $scope.dependents_list = data
+      $scope.depandants_list = data
     }, (error) => {
       console.log(error)
     })

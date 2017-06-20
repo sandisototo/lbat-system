@@ -22,6 +22,7 @@ class Members_model extends CI_Model {
 		->db
 		->select('*')
 		->from('user')
+		->where('status', 1)
 		->get()
 		->result_array();
 	  return $q;
@@ -33,6 +34,7 @@ class Members_model extends CI_Model {
 		->select('*')
 		->from('dependents')
 		->where('member_id', $member_id)
+		->where('status', 1)
 		->get()
 		->result_array();
 	  return $q;
@@ -43,9 +45,14 @@ class Members_model extends CI_Model {
 		return $this->db->update('user', $mysql_data);
 	}
 
+	function edit_depandant($depandant_id, $mysql_data) {
+		$this->db->where('id',$depandant_id);
+		return $this->db->update('dependents', $mysql_data);
+	}
+
 	function add($new_member)
 	{
-			return $this->db->insert('user',$new_member);
+			return $this->db->insert('user', $new_member);
 	}
 
 	function add_depandant($new_dependent)
@@ -53,4 +60,15 @@ class Members_model extends CI_Model {
 			return $this->db->insert('dependents',$new_dependent);
 	}
 
+	function remove($member_id){
+		$mysql_data = array('status' => 0);
+		$this->db->where('id',$member_id);
+		return $this->db->update('user', $mysql_data);
+	}
+
+	function remove_depandant($depandant_id){
+		$mysql_data = array('status' => 0);
+		$this->db->where('id',$depandant_id);
+		return $this->db->update('dependents', $mysql_data);
+	}
 }

@@ -4,11 +4,11 @@
 <link rel="stylesheet" href="<?php echo base_url();?>css/data-tables.css">
 <link rel="stylesheet" href="<?php echo base_url();?>css/messages.css">
 <div class="container" ng-controller="MembersController">
-  <div cg-busy="{promise:usersPromise,templateUrl:'<?php echo base_url();?>templates/loading.html'}"></div>
+  <div cg-busy="{promise:usersPromise,templateUrl:'<?php echo base_url();?>templates/loading.html', minDuration:700}"></div>
 	<div class="row">
   <center>
 		<div style="display: inline-block;">
-      <h2 class="text-center">LBAT Member Management |---|</h2>
+      <h2 class="text-center">LBAT Member Management |---|  </h2>
     </div>
     <div style="display: inline-block;">
       <p data-placement="top" data-toggle="tooltip" title="Add"><button class="btn btn-default btn-xs pull-right" data-title="Add" data-toggle="modal" data-target="#add"><span class="glyphicon glyphicon-plus"></span> New Member</button></p>
@@ -29,7 +29,7 @@
                         <th>Contact No.</th>
                         <th>Joined</th>
                         <th>Cover/Plan</th>
-                        <th>No. of Dependants</th>
+                        <!--th>No. of Dependants</th-->
                         <th>Plolicy Status</th>
                         <th>Action</th>
                         <th>Delete </th>
@@ -44,7 +44,7 @@
                         <th>Contact No.</th>
                         <th>Joined</th>
                         <th>Cover/Plan</th>
-                        <th>No. of Dependents</th>
+                        <!--th>No. of Dependents</th-->
                         <th>Plolicy Status</th>
                         <th>Action</th>
                         <th> X Completely?</th>
@@ -59,15 +59,15 @@
                         <td>{{member.id_number}}</td>
                         <td>{{member.cell_number}}</td>
                         <td>{{formatDate(member.timestamp) | date:'d MMMM y'}}</td>
-                        <td>........</td>
-                        <td>........</td>
+                        <!--td>........</td-->
+                        <td>One Plus Nine</td>
                         <td ng-if="member.policy_status == 1" style="background-color:#5cb85c; color: white; text-align: center;">Active</td>
                         <td ng-if="member.policy_status == 0" style="background-color:#777; color: white; text-align: center;">Lapsed</td>
                         <td>
                           <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ng-click="showEditMember(member, $index)">View/Edit <span class="glyphicon glyphicon-edit"></span></button></p>
                         </td>
                         <td>
-                          <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" >Delete <span class="glyphicon glyphicon-trash"></span></button></p>
+                          <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ng-click="confirmRemoveMember(member, $index)">Delete <span class="glyphicon glyphicon-trash"></span></button></p>
                         </td>
 
                       </tr>
@@ -92,10 +92,10 @@
              <i class="fa fa-user">
              </i>
             </div>
-            <input  name="name" type="text" ng-model="new_member.name" placeholder="Full name" class="form-control input-md" ng-required="true">
+            <input id="name"  name="name" type="text" ng-model="new_member.name" placeholder="Full name" class="form-control input-md" ng-required="true">
                    <div class="input-group-addon">
             </div>
-            <input  name="surname" type="text" ng-model="new_member.surname" placeholder="Surname" class="form-control input-md" ng-required="true">
+            <input  id="surname" name="surname" type="text" ng-model="new_member.surname" placeholder="Surname" class="form-control input-md" ng-required="true">
            </div>
         </div>
 
@@ -160,7 +160,7 @@
                     </div>
 
                     <!-- Multiple Radios (inline) -->
-                  <div class="form-group">
+                  <!--div class="form-group">
                     <p style="color: red;" ng-if="new_member.plan_id == 0"> Policy type needs to be set. </p>
                     <label class="control-label" for="policy">Policy Type</label>
                      <label class="radio-inline" for="policy0">
@@ -175,7 +175,7 @@
                        <input type="radio"  ng-model="new_member.plan_id" name="policy" value="3">
                        Type 3
                      </label>
-                    </div>
+                   </div-->
                     <hr/>
                 <!-- Textarea -->
                 <div class="form-group">
@@ -299,7 +299,7 @@
                     </div>
 
                     <!-- Multiple Radios (inline) -->
-                  <div class="form-group">
+                  <!--div class="form-group">
                     <p style="color: red;" ng-if="selected_member.plan_id == 0"> Policy type needs to be set. </p>
                     <label class="control-label" for="policy">Policy Type</label>
                      <label class="radio-inline" for="policy0">
@@ -314,7 +314,7 @@
                        <input type="radio"  ng-model="selected_member.plan_id" name="policy" id="policy2" value="3">
                        Type 3
                      </label>
-                    </div>
+                   </div-->
                     <hr/>
                 <!-- Textarea -->
                 <div class="form-group">
@@ -333,25 +333,31 @@
               <!--Depandants table -->
               <center>
                 <h4 style="margin-top: 10%;">Dependents</h4>
-                <p ng-if="dependents_list.length == 0">You have no depandants</p>
+                <p ng-if="depandants_list.length == 0">You have no depandants</p>
               </center>
-                <table ng-if="dependents_list.length != 0" class="table table-striped table-hover">
+                <table ng-if="depandants_list.length != 0" class="table table-striped table-hover">
                   <thead>
                      <tr class="bg-info">
                          <th style="text-align: right;"> Name</th>
                          <th style="text-align: right;">Surname</th>
                          <th style="text-align: right;">Id Number</th>
-                         <th></th>
+                         <!--th></th-->
                      </tr>
                   </thead>
                 <tbody> <!-- para abrir em outra aba adicionar target="_blank" -->
-                   <tr ng-repeat="(i, dependent) in dependents_list">
+                   <tr ng-repeat="(i, dependent) in depandants_list">
                        <td>{{dependent.name}}</td>
                        <td>{{dependent.surname}}</td>
                        <td>{{dependent.id_number}}</td>
-                       <td><a href="#">View</a></td>
+                       <!--td><a href="#">View</a></td-->
                    </tr>
+                   <tr>
+                     <td colspan="3">
+                       <a href="#" class="pull-right" ng-click="redirect('members/depandants/'+selected_member.id)">View All</a>
+                     </td>
+                     </tr>
                </tbody>
+
                </table>
                <button type="button" class="btn btn-info btn-sm pull-right" ng-click="redirect('members/depandants/'+selected_member.id)" data-dismiss="modal"><span class="glyphicon glyphicon-plus-sign"></span> Add </button>
             </div>
@@ -372,11 +378,11 @@
   </div>
       <div class="modal-body">
 
-   <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete {{selected_member.name}} from members?</div>
+   <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete <b>{{selected_member.name}} {{selected_member.surname}}</b> from members?</div>
 
   </div>
     <div class="modal-footer ">
-    <button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="removeMember(selected_member.id, $index)"><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
   </div>
     </div>

@@ -62,7 +62,7 @@
                         <li><a href="<?php echo base_url();?>members"><span class="glyphicons glyphicons-parents"></span>
                         View All Members </a></li>
                         <li class="divider"></li>
-                        <li><a href="<?php echo base_url();?>members/add"><span class="glyphicon glyphicon-plus"></span>
+                        <li><a href="<?php echo base_url();?>members"><span class="glyphicon glyphicon-plus"></span>
                         Add New Member </a></li>
                     </ul>
                 </li>
