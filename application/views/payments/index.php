@@ -2,160 +2,196 @@
   $this->load->view('includes/header');
 ?>
 <link rel="stylesheet" href="<?php echo base_url();?>css/data-tables.css">
+<link rel="stylesheet" href="<?php echo base_url();?>css/payments.css">
 <div class="container" ng-controller="PaymentsController">
-	<div class="row">
-		<h2 class="text-center">Payments Management - May 2017</h2>
-	</div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="well" style="margin-right: -3%;">
+   <div class="row"  style="margin-top:20px;">
+     <h2 class="text-center">Payments Management - May 2017</h2>
+
+          <div class=" well well-sm  bg-white borderZero"  uib-dropdown >
+              <div class="btn-group date-block btn-group-justified font-small dropdown" data-toggle="buttons">
+                  <label href="#home" data-toggle="tab" class="btn btn-default  next font-small semiBold" title="Next Day" style="font-size:12px; border-radius:0;">
+                     Process Payments
+                  </label>
+                  <label  href="#profile" data-toggle="tab" class="btn btn-default previous text-right font-small semiBold" title="Previous Day" style="font-size:12px;">
+                      Paid Members
+                  </label>
+                  <label href="#contact" data-toggle="tab" class="btn date-buttons btn-default text-right semiBold" style="font-size:12px;" >
+                      Still To Pay
+                  </label>
+                  <label  href="#education" data-toggle="tab" class="btn date-buttons btn-default text-right semiBold" style="font-size:12px;" >
+                     Lapsed
+                  </label>
+                  <label href="#skills" data-toggle="tab"  class="btn date-buttons btn-default text-right semiBold" style="font-size:12px;">
+                      Extras
+                  </label>
+              </div>
+
+          </div>
+            <div id="myTabContent" class="tab-content">
+                  <div class="tab-pane fade active in" id="home">
+
+                          <center> <h4>Process Payments</h4></center>
+                          <hr/>
+
                     <div class="row">
-                      <h4 class="text-center">Still-To-Pay Members</h4>
+                        <div class="dual-list list-left col-md-5">
+                          <!--button class="btn btn-default btn-sm pull-left" ng-if="all_members.length == 0">
+                              <span class="glyphicon glyphicon-download"></span>
+                              Load More
+                          </button-->
+                            <div class="well">
+                                <div class="row">
+                                  <div class="col-md-12" >
+                                    <p style="text-align:center;">Still To Pay</p>
+                                  </div>
+                                </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon glyphicon glyphicon-search"></span>
+                                        <input ng-model="q" class="form-control pull-right" placeholder="Search"/>
+
+                                    </div>
+                                    <center>
+                                    <small>"search if you are looking for a specific member."</small> <br/>
+                                  </center>
+                                </div>
+                              </div>
+                                <p ng-if="all_members.length == 0" style="text-align:center;"> "No unpaid users found!" </p>
+                                <!--pre>{{q}}</pre-->
+                                <ul class="list-group" ng-if="all_members.length != 0">
+                                    <li
+                                    ng-init="member.isSel = false"
+                                    ng-repeat="(i, member) in all_members | filter: q| startFrom:currentPage*pageSize | limitTo:pageSize"
+                                    ng-class="{sel : member.isSel}"
+                                    ng-class-def="'def'"
+                                    class="list-group-item"
+                                    style="text-align:left; cursor:pointer;font-size: x-small;"
+                                    ng-click="togglePaidSelection(member, $index); member.isSel = !member.isSel">
+                                    {{member.name}} {{member.surname}} | {{member.id_number}}
+                                    <span ng-class="{checkmark : member.isSel}" class="pull-right">
+                                        <div ng-class="{checkmark_circle : member.isSel}"></div>
+                                        <div ng-class="{checkmark_stem : member.isSel}"></div>
+                                        <div ng-class="{checkmark_kick : member.isSel}"></div>
+                                    </span>
+                                  </li>
+                                </ul>
+                                <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1; paidMembers = []">
+                                    Previous
+                                </button>
+                                {{currentPage+1}}/{{numberOfPages()}}
+                                <button ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1; paidMembers = []">
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="list-arrows col-md-1 text-center">
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                        </div>
+
+                        <div class="dual-list list-right col-md-5">
+                            <div class="well">
+                              <div class="row">
+                                  <div class="col-md-12" >
+                                    <p style="text-align:center">Paid</p>
+                                  </div>
+                              </div>
+                              <center>
+                              <small ng-if="paidMembers.length == 0" style="text-align:center;">waiting to be loaded...</small>
+                                <center>
+
+                                <ul ng-if="paidMembers.length != 0" class="list-group">
+                                    <li ng-repeat="(i, paid_member) in paidMembers"  class="list-group-item">{{paid_member.name}} {{paid_member.surname}} | {{paid_member.id_number}}</li>
+                                </ul>
+                                <button ng-if="paidMembers.length != 0" class="btn btn-default btn-sm pull-right" ng-click="confirmPaid(paidMembers)">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+
+                	</div>
+                   </div>
+              <div class="tab-pane fade" id="profile">
+                <div class="col-md-12">
+                    <center> <h4>Paid Members</h4> </center>
+                        <div class="row">
+                            <div class="col-md-12">
+                                  <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%" datatable="ng">
+                                    <thead>
+                                      <tr>
+                                        <th>
+                                          No.
+                                      </th>
+                                        <th>Name</th>
+                                        <th>ID Number</th>
+                                        <th>Contact No.</th>
+                                        <th>Joined</th>
+                                        <th>Cover/Plan</th>
+                                        <!--th>No. of Dependants</th-->
+                                        <th>Plolicy Status</th>
+                                        <!--th>Action</th>
+                                        <th>Delete </th-->
+                                      </tr>
+                                    </thead>
+
+                                    <tfoot>
+                                      <tr>
+                                        <th>No.</th>
+                                        <th>Name</th>
+                                        <th>ID Number</th>
+                                        <th>Contact No.</th>
+                                        <th>Joined</th>
+                                        <th>Cover/Plan</th>
+                                        <!--th>No. of Dependents</th-->
+                                        <th>Plolicy Status</th>
+                                        <!--th>Action</th>
+                                        <th> X Completely?</th-->
+                                      </tr>
+                                    </tfoot>
+                                    <tbody>
+                                      <tr dt-rows ng-repeat="(i, paid_member) in all_paid_members">
+                                        <td>
+                                          {{i+1}}
+                                        </td>
+                                        <td>{{paid_member.name}} {{paid_member.surname}}</td>
+                                        <td>{{paid_member.id_number}}</td>
+                                        <td>{{paid_member.cell_number}}</td>
+                                        <td>{{formatDate(paid_member.timestamp) | date:'d MMMM y'}}</td>
+                                        <!--td>........</td-->
+                                        <td>One Plus Nine</td>
+                                        <td style="background-color:#5cb85c; color: white; text-align: center;">Paid</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
                     </div>
-                    <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%" datatable="ng">
-                			<thead>
-            						<tr>
-                          <th>
-                            Paid?
-                        </th>
-            							<th>Name</th>
-            							<th>ID Number</th>
-            							<th>Contact No.</th>
-            							<th>Amount Due</th>
-            						</tr>
-            					</thead>
-
-            					<tfoot>
-            						<tr>
-                          <th>Paid?</th>
-                          <th>Name</th>
-            							<th>ID Number</th>
-            							<th>Contact No.</th>
-            							<th>Amount Due</th>
-            						</tr>
-            					</tfoot>
-
-            					<tbody>
-            						<tr dt-rows ng-repeat="(i, user) in all_users">
-                          <td>
-                            <center>
-                            <input
-                              type="checkbox"
-                              name="selectedAsPaidUsers[]"
-                              value="user"
-                              ng-checked="selectedAsPaidUsers.indexOf({{user}}) > -1"
-                              ng-click="togglePaidSelection(user)">
-                            </center>
-                          </td>
-            							<td>{{user.name}} {{user.surname}}</td>
-            							<td>{{user.id_number}}</td>
-            							<td>{{user.cell_number}}</td>
-                          <td>R 0.00</td>
-            						</tr>
-            					</tbody>
-            				</table>
                   </div>
-                  <button type="button" class="btn btn-success btn-sm pull-right" style="color: black; background-image: linear-gradient(to bottom,#e8e8e8 0,#419641">
-                    (1) Save --></button>
-            	     </div>
-                   <!--Paid-->
-                   <div class="col-md-5">
-                     <div class="well" style="background: #009600;">
-                       <div class="row">
-                         <h4 class="text-center" style="color:#e0e0e0;">Paid Members</h4>
-                       </div>
-                       <table class="table table-striped table-bordered" cellspacing="0" width="100%" style="background-color: #048604">
-                        <thead style="color: #e0e0e0;">
-                          <tr>
-                             <th>
-                               Paid?
-                           </th>
-                            <th>Name</th>
-                            <th>ID Number</th>
-                            <th>Contact No.</th>
-                            <th>Amount Paid</th>
-                          </tr>
-                        </thead>
-
-                        <tfoot style="color: #e0e0e0;">
-                          <tr>
-                             <th>Paid?</th>
-                             <th>Name</th>
-                            <th>ID Number</th>
-                            <th>Contact No.</th>
-                            <th>Amount Paid</th>
-                          </tr>
-                        </tfoot>
-
-                        <tbody>
-                          <tr>
-                             <td>
-                               ....
-                             </td>
-                            <td>...</td>
-                            <td>....</td>
-                            <td>....</td>
-                             <td>R 0.00</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      </div>
-                     </div>
-	                </div>
-</div>
-
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-      <div class="modal-dialog">
-    <div class="modal-content">
-          <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title custom_align" id="Heading">Edit Your Detail</h4>
+              </div>
+              </div>
+            <div class="tab-pane fade" id="contact">
+              <div class="col-md-6 col-md-offset-5">
+                  <h4>Still to Pay</h4>
+                  Still Updating...
+            </div>
+            </div>
+            <div class="tab-pane fade" id="education">
+              <div class="col-md-6 col-md-offset-5">
+                  <h4>Lapsed Members</h4>
+                  none yet
+              </div>
+            </div>
+             <div class="tab-pane fade" id="skills">
+               <div class="col-md-6 col-md-offset-5">
+                   <h4>Extras</h4>
+                   Whatever you need..
+             </div>
+            </div>
       </div>
-          <div class="modal-body">
-          <div class="form-group">
-        <input class="form-control " type="text" placeholder="Tiger Nixon">
-        </div>
-        <div class="form-group">
-
-        <input class="form-control " type="text" placeholder="System Architect">
-        </div>
-        <div class="form-group">
-
-
-      <input class="form-control " type="text" placeholder="Edinburgh">
-
-        </div>
       </div>
-          <div class="modal-footer ">
-        <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-      </div>
-        </div>
-    <!-- /.modal-content -->
   </div>
-      <!-- /.modal-dialog -->
-    </div>
-
-    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-      <div class="modal-dialog">
-    <div class="modal-content">
-          <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title custom_align" id="Heading">Delete this entry</h4>
-      </div>
-          <div class="modal-body">
-
-       <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete this Record?</div>
-
-      </div>
-        <div class="modal-footer ">
-        <button type="button" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
-      </div>
-        </div>
-    <!-- /.modal-content -->
-  </div>
-      <!-- /.modal-dialog -->
-    </div>
 
 <?php
   $this->load->view('includes/footer.php');

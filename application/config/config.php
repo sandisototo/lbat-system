@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://fintechrewards.co.za/';
-$config['base_url'] = 'http://demo.luvuyoburial.co.za/';
+$config['base_url'] = 'http://localhost/lbat/';
 
 /*
 |--------------------------------------------------------------------------

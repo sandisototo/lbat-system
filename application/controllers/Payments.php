@@ -39,9 +39,30 @@ class Payments extends CI_Controller {
 		$this->load->view('payments/index');
 	}
 
-	public function  get_all_users() {
+	public function  unpaid() {
 		$this->load->model('payments_model', 'payments');
-		$users = $this->payments->get_all_users();
-		echo json_encode($users);die();
+		$members = $this->payments->unpaid();
+		echo json_encode($members);
+	}
+
+	public function  paid() {
+		$this->load->model('payments_model', 'payments');
+		$members = $this->payments->paid();
+		echo json_encode($members);
+	}
+	public function  paid_for_this_month() {
+
+		$form = $this->input->post();
+		$paid_members = json_decode($form['paid_members'], true);
+
+		$ids = [];
+		foreach ($paid_members as $key => $value) {
+			array_push($ids, $value['id']);
+		}
+
+		$mysql_data = array('current_month_payment_status' => 1);
+		$this->load->model('payments_model', 'payments');
+		$updated = $this->payments->paid_for_this_month($ids, $mysql_data);
+		echo json_encode($updated);
 	}
 }

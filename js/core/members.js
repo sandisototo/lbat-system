@@ -37,7 +37,6 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
 
   // Show edit depandant dialogue
   $scope.showEditDepandant = (depandant, index) => {
-    console.log(depandant)
     $scope.selected_depandant_index = index
     $scope.selected_depandant = depandant
     $scope.dob = exrasFactory.dob(depandant.id_number)

@@ -3,7 +3,7 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   $log.debug('MyApp is ready!')
 })
 .provider('baseUrl', function () {
-  const enviroment = 'staging'
+  const enviroment = 'dev'
   this.$get = () => enviroment === 'dev' ? 'http://localhost/lbat/' : 'http://demo.luvuyoburial.co.za/'
 })
 .provider('headers', function () {
@@ -32,6 +32,18 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   membersFactory.removeMember = (id) => $http.get(`${baseUrl}members/remove/${id}`)
   membersFactory.removeDepandant = (member_id, depandant_id) => $http.get(`${baseUrl}members/remove_depandant/${member_id}/${depandant_id}`)
   return membersFactory
+}])
+.factory('paymentsFactory', ['$http', 'baseUrl', 'headers', function($http, baseUrl, headers) {
+  console.debug('membersFactory Running')
+  let paymentsFactory = {}
+  paymentsFactory.getUnpaidMembers = () => $http.get(`${baseUrl}payments/unpaid`)
+  paymentsFactory.getPaidMembers = () => $http.get(`${baseUrl}payments/paid`)
+  paymentsFactory.paidForTthisMonth = (confirmedPaidMembers) => {
+    let paid_members = angular.toJson(confirmedPaidMembers)
+    let objectToSerialize = { paid_members }
+    $http.post(`${baseUrl}payments/paid_for_this_month`, $.param(objectToSerialize), headers)
+  }
+  return paymentsFactory
 }])
 .factory('exrasFactory', ['$http', 'toastr', function($http, toastr) {
   console.debug('exrasFactory Running')
