@@ -6,6 +6,8 @@ function ($http, $scope, $window, $filter, toastr, exrasFactory, paymentsFactory
   $scope.pageSize = 15
   $scope.q = ''
   $scope.all_members_count  = 0
+  $scope.loading_message = "Updating...."
+
   $scope.getUnpaidMembers = () => {
 		 $scope.usersPromise = paymentsFactory.getUnpaidMembers()
      .then((response) => response.data)
@@ -75,13 +77,21 @@ function ($http, $scope, $window, $filter, toastr, exrasFactory, paymentsFactory
     })
 
     if ($scope.confirmedPaidMembers.length !== 0) {
-      $scope.usersPromise = paymentsFactory.paidForTthisMonth($scope.confirmedPaidMembers)
+      $scope.usersPromise = paymentsFactory.paidForThisMonth($scope.confirmedPaidMembers)
       .then((response) => response.data)
       .then((data) => {
         if (!data) {
           exrasFactory.displayToast(toastr.error, "Error", "Members could not be confirmed! Please try again later")
           return
         }
+
+        angular.forEach($scope.confirmedPaidMembers, (value, key) => {
+          $scope.all_paid_members.push(value)
+        })
+
+        $scope.all_paid_members_counter = $scope.all_paid_members.length
+        exrasFactory.displayToast(toastr.success, "Success", "Members confirmed successfully!")
+        return
        },
        (error) => {
          exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
@@ -97,6 +107,18 @@ function ($http, $scope, $window, $filter, toastr, exrasFactory, paymentsFactory
    //Pagination
    $scope.getData = () =>  $filter('filter')($scope.all_members, $scope.q)
    $scope.numberOfPages = () => Math.ceil($scope.all_members_count/$scope.pageSize)
+
+   //Tabs
+   $scope.active = {
+    a: true
+   }
+   $scope.activateTab = function(tab) {
+    $scope.active = {}
+    $scope.active[tab] = true
+   }
+   // Dates
+   $scope.currentMonth = moment().format('MMMM')
+   $scope.currentYear = moment().format('YYYY')
 
 }])
 .filter('startFrom', () => {

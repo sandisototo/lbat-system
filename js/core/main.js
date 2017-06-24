@@ -38,10 +38,10 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   let paymentsFactory = {}
   paymentsFactory.getUnpaidMembers = () => $http.get(`${baseUrl}payments/unpaid`)
   paymentsFactory.getPaidMembers = () => $http.get(`${baseUrl}payments/paid`)
-  paymentsFactory.paidForTthisMonth = (confirmedPaidMembers) => {
+  paymentsFactory.paidForThisMonth = (confirmedPaidMembers) => {
     let paid_members = angular.toJson(confirmedPaidMembers)
     let objectToSerialize = { paid_members }
-    $http.post(`${baseUrl}payments/paid_for_this_month`, $.param(objectToSerialize), headers)
+    return $http.post(`${baseUrl}payments/paid_for_this_month`, $.param(objectToSerialize), headers)
   }
   return paymentsFactory
 }])
@@ -60,7 +60,7 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   exrasFactory.dob = (id_number) => {
     // get first 6 digits as a valid date
    let tempDate = new Date(id_number.substring(0, 2), id_number.substring(2, 4), id_number.substring(4, 6))
-
+   
    let id_date = tempDate.getDate()
    let id_month = moment.months(tempDate.getMonth() - 1)
    let id_year = tempDate.getFullYear()
