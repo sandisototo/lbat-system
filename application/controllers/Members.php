@@ -24,7 +24,6 @@ class Members extends CI_Controller {
 	 }
 
 	private function _is_logged_in() {
-		$this->load->model('admin_model', 'admin');
 		$user_session = $this->session->get_userdata();
 		$user_data = $user_session['user'];
 		$is_logged_in = $user_data['is_logged_in'];

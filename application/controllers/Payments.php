@@ -63,6 +63,17 @@ class Payments extends CI_Controller {
 		$mysql_data = array('current_month_payment_status' => 1);
 		$this->load->model('payments_model', 'payments');
 		$updated = $this->payments->paid_for_this_month($ids, $mysql_data);
-		echo json_encode($updated);
+		if ( $updated ) {
+			$mysql_data = [];
+			foreach ($ids as $key => $value) {
+				$mysql_data[$key]['user_id'] = $value;
+				$mysql_data[$key]['user_plan_amount'] = 200;
+			}
+
+			$recorded = $this->payments->record_payment($mysql_data);
+			echo json_encode($recorded);
+		} else {
+			echo json_encode($updated);
+		}
 	}
 }

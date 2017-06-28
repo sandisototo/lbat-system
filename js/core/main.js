@@ -45,7 +45,7 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   }
   return paymentsFactory
 }])
-.factory('exrasFactory', ['$http', 'toastr', function($http, toastr) {
+.factory('exrasFactory', ['toastr', function(toastr) {
   console.debug('exrasFactory Running')
   let exrasFactory = {}
   // DisplayToast
@@ -60,7 +60,7 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   exrasFactory.dob = (id_number) => {
     // get first 6 digits as a valid date
    let tempDate = new Date(id_number.substring(0, 2), id_number.substring(2, 4), id_number.substring(4, 6))
-   
+
    let id_date = tempDate.getDate()
    let id_month = moment.months(tempDate.getMonth() - 1)
    let id_year = tempDate.getFullYear()
@@ -68,11 +68,22 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   }
   return exrasFactory
 }])
+.factory('statsFactory', ['$http', 'baseUrl', function($http, baseUrl) {
+  console.debug('statsFactory Running')
+  let statsFactory = {}
+  // get all statistics
+  statsFactory.all = () => $http.get(`${baseUrl}stats/all`)
+  return statsFactory
+}])
 .controller('MainController', ['$scope', '$window', 'baseUrl',
   function($scope, $window, baseUrl) {
     console.debug('MainController Running')
     $scope.isActivePath = (viewLocation) => viewLocation === $window.location.href.substr(window.location.href.lastIndexOf('/') + 1)
     $scope.redirect = (route) => $window.location.href = `${baseUrl}${route}`
     $scope.formatDate = (date) => new Date(date)
+    // Dates
+    $scope.currentMonth = moment().format('MMMM')
+    $scope.currentYear = moment().format('YYYY')
+    $scope.previousMonth = moment().subtract(1, 'months').format('MMMM')
   }
 ])

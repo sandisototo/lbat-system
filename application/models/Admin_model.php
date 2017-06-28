@@ -6,14 +6,13 @@ class Admin_model extends CI_Model {
 		parent::__construct();
 	}
 
-	function validate_user($username,$password) {
+	function validate_admin($username,$password) {
 		$q = $this
 		->db
-		->select('user.id, user.name, user.surname, admin.id as admin_id')
+		->select('*')
 		->from('admin')
-		->join('user', 'user.id = admin.user_id', 'left')
-		->where('admin.username', $username)
-		->where('admin.password', $password)
+		->where('username', $username)
+		->where('password', $password)
 		->get()
 		->row_array();
 	  return $q;

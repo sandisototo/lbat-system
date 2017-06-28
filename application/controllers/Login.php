@@ -59,7 +59,7 @@ class Login extends CI_Controller {
 		$password = $post_values['password'];
 
 		$this->load->model('admin_model', 'admin');
-		$user = $this->admin->validate_user($username,$password);
+		$user = $this->admin->validate_admin($username,$password);
 
 		if (empty($user)) {
 			$data = array('error' => "User Not Found");
@@ -69,17 +69,17 @@ class Login extends CI_Controller {
 			$surname = $user['surname'];
 
 			$data = array(
-				'admin' => $user,
-				'admin_id' => $user['id'],
+				'user' => $user,
+				'user_id' => $user['id'],
 				'is_logged_in' => true,
 				'name'=>$name,
 				'surname'=>$surname);
 
-				$this->session->unset_userdata('user');
-				$this->session->set_userdata('admin', $data);
-
-				echo json_encode($data);
-			}
+			// $this->session->unset_userdata('user');
+			// $this->session->set_userdata('admin', $data);
+			$this->session->set_userdata('user', $data);
+			echo json_encode($data);
+		}
 	}
 
   public function register() {

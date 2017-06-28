@@ -116,10 +116,6 @@ function ($http, $scope, $window, $filter, toastr, exrasFactory, paymentsFactory
     $scope.active = {}
     $scope.active[tab] = true
    }
-   // Dates
-   $scope.currentMonth = moment().format('MMMM')
-   $scope.currentYear = moment().format('YYYY')
-
 }])
 .filter('startFrom', () => {
     return (input, start) => {

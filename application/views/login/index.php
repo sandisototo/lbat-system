@@ -33,16 +33,16 @@
         <div id="login-access" class="tab-pane fade active in">
           <h2><i class="glyphicon glyphicon-log-in"></i> LBAT system </h2>
           <form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal"
-          ng-submit="login()">
+          ng-submit="admin_login()">
             <div class="form-group ">
               <label for="login" class="sr-only">Username</label>
                 <input type="text" class="form-control" name="username" id="login_value"
-                  placeholder="Username" tabindex="1" value=""  ng-model="user.username" required/>
+                  placeholder="Username" tabindex="1" value=""  ng-model="admin.username" required/>
             </div>
             <div class="form-group ">
               <label for="password" class="sr-only">Password</label>
                 <input type="password" class="form-control" name="password" id="password"
-                  placeholder="Password" value="" tabindex="2" ng-model="user.password" required/>
+                  placeholder="Password" value="" tabindex="2" ng-model="admin.password" required/>
             </div>
             <div class="checkbox">
                 <label class="control-label" for="remember_me">

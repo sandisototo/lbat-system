@@ -1,12 +1,10 @@
 angular.module("login",['register','toastr'])
-.controller("LoginController", ['$http', '$scope', '$window', 'toastr', 'baseUrl', 'validateFactory', 'exrasFactory',
-  function($http, $scope, $window, toastr, baseUrl, validateFactory, exrasFactory) {
+.controller("LoginController", ['$http', '$scope', '$window', 'toastr', 'baseUrl', 'validateFactory', 'exrasFactory', 'statsFactory',
+  function($http, $scope, $window, toastr, baseUrl, validateFactory, exrasFactory, statsFactory) {
+    // Login User
     $scope.user = {}
 
-    // Login User
   	$scope.login = () => {
-    	$scope.failed = false
-    	$scope.success = false
       validateFactory.validateUser($scope.user)
       .then((response) => response.data)
       .then((data) => {
@@ -24,90 +22,51 @@ angular.module("login",['register','toastr'])
        })
   	}
 
-    $scope.admin = {}
+
     // Login Admin
-    $scope.admin_login = (admin) => {
-      validateFactory.validateAdmin(admin)
+    $scope.admin = {}
+
+    $scope.admin_login = () => {
+      validateFactory.validateAdmin($scope.admin)
       .then((response) => response.data)
       .then((data) => {
-        if (!data.admin) {
+        if (!data.user) {
           $scope.errorMessage = "Admin Not Found! Please try again"
           exrasFactory.displayToast(toastr.error, "Error", $scope.errorMessage)
+          return
         }
 
-        $window.location.href = `${baseUrl}admin`
+        $window.location.href = `${baseUrl}site`
        },
        (error) => {
          $scope.errorMessage = "Sorry we coudn't process this request! Please try again later"
          exrasFactory.displayToast(toastr.error, "Error", $scope.errorMessage)
        })
-    };
+    }
 
-    $scope.total_member_count = 0;
-    $scope.total_active_member_count = 0;
-    $scope.lapsed_member_count = 0;
+    $scope.getStats = () => {
+      statsFactory.all()
+      .then((response) => response.data)
+      .then((data) => {
+        if (!data) {
+          $scope.errorMessage = "Report failed to load! Please reload the page again"
+          exrasFactory.displayToast(toastr.error, "Error", $scope.errorMessage)
+          return
+        }
 
-    $scope.get_helper_count = function(){
-     $http.get(`${baseUrl}`)
-     .success(function(data) {
-       if (!data.status) {
-         // if not successful, bind errors to error variables
-         $scope.errorMessage = data.message;
-         console.log($scope.errorMessage);
-       } else {
-
-         $scope.helper_count = data.count;
-         console.log($scope.helper_count);
-
-       }
-     });
-    };
-
-    $scope.get_getter_count = function(){
-
-     $http.get(`${baseUrl}`)
-     .success(function(data) {
-
-       if (!data.status) {
-         // if not successful, bind errors to error variables
-         $scope.errorMessage = data.message;
-         console.log($scope.errorMessage);
-       } else {
-
-         $scope.getter_count = data.count;
-         console.log($scope.getter_count);
-       }
-     });
-    };
-
-    $scope.get_my_reward_count = function(){
-
-     $http.get(`${baseUrl}`)
-     .success(function(data) {
-
-       if (!data.status) {
-         // if not successful, bind errors to error variables
-         $scope.errorMessage = data.message;
-         console.log($scope.errorMessage);
-       } else {
-
-         $scope.reward_count = data.count;
-         console.log($scope.reward_count);
-       }
-     });
-    };
-
-    $scope.get_getter_count();
-    $scope.get_helper_count();
-    $scope.get_my_reward_count();
-
-    $scope.helper_redirect = function(){
-        $window.location.href = `${baseUrl}`;
-    };
-
-    $scope.getter_redirect = function(){
-        $window.location.href = `${baseUrl}`;
-    };
-
-  	}
-  ]);
+        done(data)
+       },
+       (error) => {
+         $scope.errorMessage = "Sorry we coudn't return the lates STATISTICS! Please try again later"
+         exrasFactory.displayToast(toastr.error, "Error", $scope.errorMessage)
+       })
+    }
+    $scope.getStats()
+    let done = (data) => {
+      $scope.total_member_count = data.total_member_count
+      $scope.total_active_member_count = data.total_active_member_count
+      $scope.lapsed_member_count = data.lapsed_member_count
+      $scope.total_due_count = data.total_due_count
+    }
+  }
+]);

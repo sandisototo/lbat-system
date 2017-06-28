@@ -28,6 +28,40 @@ class Members_model extends CI_Model {
 	  return $q;
 	}
 
+	function total_member_count() {
+		$q = $this
+		->db
+		->select('count(*) as count')
+		->from('user')
+		->where('status', 1)
+		->get()
+		->row_array();
+	  return $q['count'];
+	}
+
+	function total_active_member_count() {
+		$q = $this
+		->db
+		->select('count(*) as count')
+		->from('user')
+		->where('status', 1)
+		->where('policy_status', 1)
+		->get()
+		->row_array();
+		return $q['count'];
+	}
+
+	function total_lapsed_member_count() {
+		$q = $this
+		->db
+		->select('count(*) as count')
+		->from('user')
+		->where('policy_status', 0)
+		->get()
+		->row_array();
+		return $q['count'];
+	}
+
 	function get_depandants($member_id) {
 		$q = $this
 		->db

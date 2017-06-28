@@ -30,7 +30,6 @@
             $user_id = $user_data['user_id'];
             $name = $user_data['name'];
             $surname = $user_data['surname'];
-            $cell_number = $user_data['cell_number'];
         ?>
 
 <center>
@@ -117,9 +116,6 @@
       </p>
       <p style="display:none" ng-init="user_surname='<?php echo $surname; ?>'">
       </p>
-      <p style="display:none" ng-init="cell_number='<?php echo $cell_number; ?>'">
-      </p>
-
 </div>
 </td>
 </tr>
