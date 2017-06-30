@@ -23,7 +23,7 @@
                      Lapsed
                   </label>
                   <label href="#skills" data-toggle="tab"  ng-click="activateTab('e')" ng-class="{ active_tab: active.e }" class="btn date-buttons btn-default text-right semiBold" style="font-size:12px;">
-                      Extras
+                      Settings
                   </label>
               </div>
 
@@ -119,6 +119,7 @@
               <div class="tab-pane fade" id="profile">
                 <div class="col-md-12">
                     <center> <h4>Paid Members</h4> </center>
+                      <hr/>
                         <div class="row">
                             <div class="col-md-12">
                                   <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%" datatable="ng">
@@ -176,6 +177,7 @@
               <div class="col-md-12">
                   <center><h4>Still to Pay</h4>
                     <button id="post_message" class="btn btn-default btn-xs" type="button" ng-click="">Send Reminder To All</button>
+                      <hr/>
                   </center>
                   <div class="row">
                       <div class="col-md-12">
@@ -231,15 +233,77 @@
             </div>
             </div>
             <div class="tab-pane fade" id="education">
-              <div class="col-md-6 col-md-offset-5">
+              <div class="col-md-12">
+                <center>
                   <h4>Lapsed Members</h4>
-                  none yet
+                  <hr/>
+                </center>
+                  <div class="row">
+                      <div class="col-md-12">
+                            <table id="datatable3" class="table table-striped table-bordered" cellspacing="0" width="100%" datatable="ng">
+                              <thead>
+                                <tr>
+                                  <th>
+                                    No.
+                                </th>
+                                  <th>Name</th>
+                                  <th>ID Number</th>
+                                  <th>Contact No.</th>
+                                  <th>Joined</th>
+                                  <th>Cover/Plan</th>
+                                  <!--th>No. of Dependants</th-->
+                                  <th>Plolicy Status</th>
+                                  <!--th>Action</th>
+                                  <th>Delete </th-->
+                                </tr>
+                              </thead>
+
+                              <tfoot>
+                                <tr>
+                                  <th>No.</th>
+                                  <th>Name</th>
+                                  <th>ID Number</th>
+                                  <th>Contact No.</th>
+                                  <th>Joined</th>
+                                  <th>Cover/Plan</th>
+                                  <!--th>No. of Dependents</th-->
+                                  <th>Plolicy Status</th>
+                                  <!--th>Action</th>
+                                  <th> X Completely?</th-->
+                                </tr>
+                              </tfoot>
+                              <tbody>
+                                <tr dt-rows ng-repeat="(i, lapsed_member) in all_lapsed_members">
+                                  <td>
+                                    {{i+1}}
+                                  </td>
+                                  <td>{{lapsed_member.name}} {{lapsed_member.surname}}</td>
+                                  <td>{{lapsed_member.id_number}}</td>
+                                  <td>{{lapsed_member.cell_number}}</td>
+                                  <td>{{formatDate(lapsed_member.timestamp) | date:'d MMMM y'}}</td>
+                                  <!--td>........</td-->
+                                  <td>One Plus Nine</td>
+                                  <td style="background-color:grey; color: white; text-align: center;">Lapsed</td>
+                                </tr>
+                              </tbody>
+                            </table>
+              </div>
+            </div>
               </div>
             </div>
              <div class="tab-pane fade" id="skills">
-               <div class="col-md-6 col-md-offset-5">
-                   <h4>Extras</h4>
-                   Whatever you need..
+               <div class="col-md-12">
+                 <center>
+                   <h4>Settings</h4>
+                 </center>
+                   <hr/>
+                   <center>
+                   <p>Reset all back to not paid?</p>
+                   <button class="btn btn-default btn-sm">
+                       <span class="glyphicon glyphicon-refresh"></span>
+                       Reset
+                   </button>
+                 </center>
              </div>
             </div>
       </div>

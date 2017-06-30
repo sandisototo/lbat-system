@@ -67,6 +67,7 @@ angular.module("login",['register','toastr'])
       $scope.total_active_member_count = data.total_active_member_count
       $scope.lapsed_member_count = data.lapsed_member_count
       $scope.total_due_count = data.total_due_count
+      $scope.missed_last_month_count = data.missed_last_month_count
     }
   }
 ]);

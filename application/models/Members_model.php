@@ -57,6 +57,7 @@ class Members_model extends CI_Model {
 		->select('count(*) as count')
 		->from('user')
 		->where('policy_status', 0)
+		->where('current_month_payment_status', 0)
 		->get()
 		->row_array();
 		return $q['count'];

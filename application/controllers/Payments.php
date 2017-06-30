@@ -50,6 +50,12 @@ class Payments extends CI_Controller {
 		$members = $this->payments->paid();
 		echo json_encode($members);
 	}
+	public function  lapsed() {
+		$this->load->model('payments_model', 'payments');
+		$members = $this->payments->lapsed();
+		echo json_encode($members);
+	}
+
 	public function  paid_for_this_month() {
 
 		$form = $this->input->post();
@@ -73,7 +79,19 @@ class Payments extends CI_Controller {
 			$recorded = $this->payments->record_payment($mysql_data);
 			echo json_encode($recorded);
 		} else {
+			echo json_encode(array('error' => "There was an error retrieving paid_for_this_month members"));
+		}
+	}
+
+	public function reset_to_unpaid()
+	{
+		$this->load->model('payments_model', 'payments');
+		$mysql_data = $arrayName = array('paid_for_this_month' => 0 );
+		$updated = $this->payments->paid_for_this_month($ids, $mysql_data);
+		if ( $updated ) {
 			echo json_encode($updated);
+		} else {
+			echo json_encode(array('error' => "There was an error resetting member for this month"));
 		}
 	}
 }

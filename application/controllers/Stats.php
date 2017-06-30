@@ -38,6 +38,7 @@ class Stats extends CI_Controller {
     $stats['total_active_member_count'] = $this->total_active_member_count();
     $stats['lapsed_member_count'] = $this->total_lapsed_member_count();
     $stats['total_due_count'] = $this->total_due_count();
+		$stats['missed_last_month_count'] = $this->missed_last_month_count();
 		echo json_encode($stats);
 	}
 
@@ -64,4 +65,11 @@ class Stats extends CI_Controller {
     $count = $this->payments->total_due_count();
     return (int)$count;
   }
+
+	public function missed_last_month_count()
+	{
+		$this->load->model('payments_model', 'payments');
+    $count = $this->payments->missed_last_month_count();
+    return (int)$count;
+	}
 }

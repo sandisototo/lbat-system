@@ -39,8 +39,24 @@ function ($http, $scope, $window, $filter, toastr, exrasFactory, paymentsFactory
     })
   }
 
+  $scope.getLapsedMembers = () => {
+     $scope.lapsedPromise = paymentsFactory.getLapsedMembers()
+     .then((response) => response.data)
+     .then((data) => {
+       if (!data) {
+         return
+       }
+
+       laspsed_done(data)
+      },
+      (error) => {
+        exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
+    })
+  }
+
   $scope.getUnpaidMembers()
   $scope.getPaidMembers()
+  $scope.getLapsedMembers()
 
   let done = (data) => {
     $scope.all_members = data
@@ -50,6 +66,11 @@ function ($http, $scope, $window, $filter, toastr, exrasFactory, paymentsFactory
   let paid_done = (data) => {
     $scope.all_paid_members = data
     $scope.all_paid_members_counter = data.length
+  }
+
+  let laspsed_done = (data) => {
+    $scope.all_lapsed_members = data
+    $scope.all_lapsed_members_counter = data.length
   }
 
   // Selected paid members

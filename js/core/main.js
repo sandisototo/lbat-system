@@ -38,6 +38,7 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   let paymentsFactory = {}
   paymentsFactory.getUnpaidMembers = () => $http.get(`${baseUrl}payments/unpaid`)
   paymentsFactory.getPaidMembers = () => $http.get(`${baseUrl}payments/paid`)
+  paymentsFactory.getLapsedMembers = () => $http.get(`${baseUrl}payments/lapsed`)
   paymentsFactory.paidForThisMonth = (confirmedPaidMembers) => {
     let paid_members = angular.toJson(confirmedPaidMembers)
     let objectToSerialize = { paid_members }
