@@ -138,6 +138,90 @@ function ($http, $scope, $window, $filter, toastr, exrasFactory, paymentsFactory
     $scope.active[tab] = true
    }
 }])
+.controller("PaymentsHistoryController", ['$http', '$scope', '$window', '$filter', 'toastr', 'exrasFactory', 'paymentsFactory',
+function ($http, $scope, $window, $filter, toastr, exrasFactory, paymentsFactory) {
+  console.debug('<----Payments History Controller----->')
+
+  $scope.loading_message = 'Updating....'
+  // load Payement
+  $scope.loadPayment = (payment) => {
+    if (!$scope.paymentForm.$valid) {
+      exrasFactory.displayToast(toastr.error, "Error", "Date cannot be left blank. Please load payment again.")
+      return false
+    }
+    $scope.new_payment = payment
+    $scope.new_payment.timestamp = `${payment.date_year}-${payment.date_month}-${payment.date_day}`
+    $scope.new_payment.user_plan_amount = 200
+    $scope.post_data = {
+      user_id: $scope.new_payment.user_id,
+      user_plan_amount: $scope.new_payment.user_plan_amount,
+      timestamp: $scope.new_payment.timestamp
+    }
+    $scope.paymentPromise = paymentsFactory.loadPayment($scope.post_data)
+    .then((response) => response.data)
+    .then((status) => {
+      if (!status) {
+        exrasFactory.displayToast(toastr.error, "Error", "Could not add this record! Make sure all required fields are filled.")
+        return
+      }
+      $scope.new_payment.status = 1
+      $scope.payment_histroy.push($scope.new_payment)
+      $scope.new_payment = {}
+      $scope.post_data = {}
+      exrasFactory.displayToast(toastr.success, "Success", "Record added successfully!")
+    },(error) => {
+      exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
+      console.log(error)
+    })
+  }
+
+  // Confirm revert payment
+  $scope.confirmRevertPayment = (payment, index) => {
+    $scope.selected_payment_index = index
+    $scope.selected_payment = payment
+  }
+
+  // Revert Payment
+  $scope.revertPayment = (member_id, payment_id, timestamp, $index) => {
+    $scope.paymentPromise = paymentsFactory.revertPayment(member_id, payment_id, timestamp.substring(0, 10))
+    .then((response) => response.data)
+    .then((data) => {
+      if (!data) {
+        exrasFactory.displayToast(toastr.error, "Error", "Could not revert this payment! Please try again later.")
+        return
+      }
+      if($scope.selected_payment_index !== -1) {
+        $scope.payment_histroy[$scope.selected_payment_index].status = 0
+        $scope.selected_payment_index = -1
+        exrasFactory.displayToast(toastr.success, "Success", "Payment reverted successfully!")
+      }
+
+    },
+    (error) => {
+      console.log('error--->', error)
+      exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
+    })
+  }
+  //Get Payment History
+  $scope.getPaymentsHistory = (member_id) => {
+     $scope.paymentPromise = paymentsFactory.getPaymentsHistory(member_id)
+     .then((response) => response.data)
+     .then((data) => {
+       if (!data) {
+         return
+       }
+
+       done(data)
+      },
+      (error) => {
+        exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
+    })
+  }
+
+  let done = (data) => {
+    $scope.payment_histroy = data
+  }
+}])
 .filter('startFrom', () => {
     return (input, start) => {
       if (!input || !input.length) { return }

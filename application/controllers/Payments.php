@@ -83,8 +83,7 @@ class Payments extends CI_Controller {
 		}
 	}
 
-	public function reset_to_unpaid()
-	{
+	public function reset_to_unpaid() {
 		$this->load->model('payments_model', 'payments');
 		$mysql_data = $arrayName = array('paid_for_this_month' => 0 );
 		$updated = $this->payments->paid_for_this_month($ids, $mysql_data);
@@ -93,5 +92,76 @@ class Payments extends CI_Controller {
 		} else {
 			echo json_encode(array('error' => "There was an error resetting member for this month"));
 		}
+	}
+
+	// Payments History view
+	public function history($member_id = 0) {
+		if(!$member_id) {
+			redirect('members');
+		}
+		$user_session = $this->session->get_userdata();
+		$user_data = $user_session['user'];
+		$this->load->model('members_model', 'members');
+		$this->load->model('payments_model', 'payments');
+		$data['member'] = $this->members->get($member_id);
+		$data['history'] = $this->payments->get_history($member_id);
+		$this->load->view('payments/history', $data);
+	}
+	// Get History
+	public function get_history($member_id){
+		$this->load->model('payments_model', 'payments');
+		$histroy = $this->payments->get_history($member_id);
+		echo json_encode($histroy);
+	}
+
+	// add depandant
+	public function load_payment() {
+		if (empty($this->input->post())) {
+			echo json_encode(array('error' => "Missing input post data"));
+			die;
+		}
+		$user_session = $this->session->get_userdata();
+		$user_data = $user_session['user'];
+		$this->load->model('payments_model', 'payments');
+
+		if($this->isCurrentMonth($this->input->post('timestamp'))) {
+			$user_id = $this->input->post('user_id');
+			$this->payments->paid_for_this_month_single($user_id);
+		}
+		//This still needs to be reworked
+		$loaded = $this->payments->load_payment($this->input->post());
+		if (!$loaded) {
+			echo json_encode(array('error' => "Error executing mySql command"));
+			die;
+		}
+		echo json_encode($loaded);
+	}
+
+	// revert payment
+	public function revert_payment($member_id, $payment_id = 0, $timestamp = null) {
+		if (!$payment_id) {
+			redirect('members/history/'.$member_id);
+		}
+		$this->load->model('payments_model', 'payments');
+		if($this->isCurrentMonth($timestamp)) {
+			$user_id = $this->input->post('user_id');
+			$this->payments->revert_paid_for_this_month($member_id);
+		}
+		$updated = $this->payments->revert_payment($payment_id);
+		echo json_encode($updated);
+	}
+
+	//check Date
+	function isCurrentMonth($month) {
+		date_default_timezone_set('UTC');
+		$current_month = date('m');
+		$current_year = date('y');
+
+		$compare_month = date("m", strtotime($month));
+		$compare_year = date("y", strtotime($month));
+
+		$current_year_month = $current_year.$current_month;
+		$compare_year_month = $compare_year.$compare_month;
+		return $compare_year_month === $current_year_month ? true : false;
 	}
 }

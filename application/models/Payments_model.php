@@ -29,10 +29,18 @@ class Payments_model extends CI_Model {
 		 return $q;
 	}
 
+	// Update a batch current_month_payment_status
 	function paid_for_this_month($ids, $mysql_data) {
 		$this->db->where_in('id', $ids );
 		return $this->db->update('user', $mysql_data);
 	}
+	// Update a single current_month_payment_status
+	function paid_for_this_month_single($user_id) {
+		$mysql_data = array('current_month_payment_status' => 1);
+		$this->db->where_in('id', $user_id );
+		return $this->db->update('user', $mysql_data);
+	}
+
 	// Total due for the month
 	function total_due_count(){
 		$q = $this
@@ -71,6 +79,33 @@ class Payments_model extends CI_Model {
 
 	function reset_to_unpaid($ids, $mysql_data) {
 		$this->db->where_in('paid_for_this_month', 1 );
+		return $this->db->update('user', $mysql_data);
+	}
+
+	function get_history($member_id) {
+		$q = $this
+		->db
+		->select('*')
+		->from('payment')
+		->where('user_id', $member_id)
+		->get()
+		->result_array();
+		return $q;
+	}
+
+	function load_payment($payment) {
+		return $this->db->insert('payment', $payment);
+	}
+
+	function revert_payment($payment_id) {
+		$mysql_data = array('status' => 0);
+		$this->db->where('id',$payment_id);
+		return $this->db->update('payment', $mysql_data);
+	}
+
+	function revert_paid_for_this_month($member_id) {
+		$mysql_data = array('current_month_payment_status' => 0);
+		$this->db->where_in('id', $member_id );
 		return $this->db->update('user', $mysql_data);
 	}
 }

@@ -39,6 +39,9 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   paymentsFactory.getUnpaidMembers = () => $http.get(`${baseUrl}payments/unpaid`)
   paymentsFactory.getPaidMembers = () => $http.get(`${baseUrl}payments/paid`)
   paymentsFactory.getLapsedMembers = () => $http.get(`${baseUrl}payments/lapsed`)
+  paymentsFactory.getPaymentsHistory = (id) => $http.get(`${baseUrl}payments/get_history/${id}`)
+  paymentsFactory.loadPayment = (payment) => $http.post(`${baseUrl}payments/load_payment`, $.param(payment), headers)
+  paymentsFactory.revertPayment = (member_id, payment_id, timestamp) => $http.get(`${baseUrl}payments/revert_payment/${member_id}/${payment_id}/${timestamp}`)
   paymentsFactory.paidForThisMonth = (confirmedPaidMembers) => {
     let paid_members = angular.toJson(confirmedPaidMembers)
     let objectToSerialize = { paid_members }

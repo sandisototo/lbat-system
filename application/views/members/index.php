@@ -207,8 +207,12 @@
         <div class="modal-dialog">
       <div class="modal-content">
             <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <button type="button" class="close pull-right" data-dismiss="modal" aria-hidden="true">×</button>
+              <div style="display: flex;">
           <h4 class="modal-title custom_align" id="Heading">Edit {{selected_member.name}}'s Details</h4>
+          <a href="payments/history/{{selected_member.id}}" style="font-size: x-small; margin-left: auto; margin-right: 4%;margin-top: 1%;">View/Add Payments History?</a>
+        </div>
+
         </div>
     <div class="modal-body">
       <form name="inputForm">
