@@ -23,8 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-//$config['base_url'] = 'http://fintechrewards.co.za/';
-$config['base_url'] = 'http://localhost/lbat/';
+$config['base_url'] = 'http://demo.luvuyoburial.co.za/';
+// $config['base_url'] = 'http://localhost/lbat/';
 
 /*
 |--------------------------------------------------------------------------

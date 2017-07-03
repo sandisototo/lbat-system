@@ -3,7 +3,7 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   $log.debug('MyApp is ready!')
 })
 .provider('baseUrl', function () {
-  const enviroment = 'dev'
+  const enviroment = 'live'
   this.$get = () => enviroment === 'dev' ? 'http://localhost/lbat/' : 'http://demo.luvuyoburial.co.za/'
 })
 .provider('headers', function () {
