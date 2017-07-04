@@ -89,5 +89,8 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
     $scope.currentMonth = moment().format('MMMM')
     $scope.currentYear = moment().format('YYYY')
     $scope.previousMonth = moment().subtract(1, 'months').format('MMMM')
+
+    //print
+    $scope.print = () => window.print()
   }
 ])

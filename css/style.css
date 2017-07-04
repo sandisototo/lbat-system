@@ -1,5 +1,5 @@
 .label,.glyphicon { margin-right:5px; }
- 
+
 .circle-tile {
     margin-bottom: 15px;
     text-align: center;
@@ -69,6 +69,9 @@
 .green {
     background-color: #5cb85c;
 }
+.green-semi {
+    background-color: #96b354;
+}
 .blue {
     background-color: #2980B9;
 }
@@ -114,4 +117,3 @@
 .text-faded {
     color: rgba(255, 255, 255, 0.7);
 }
-

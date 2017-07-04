@@ -55,11 +55,25 @@ class Payments_model extends CI_Model {
 	  return $q['count'];
 	}
 
+	// Total paid for the month
+	function total_paid_count(){
+		$q = $this
+		->db
+		->select('count(*) as count')
+		->from('user')
+		->where('status', 1)
+		->where('policy_status', 1)
+		->where('current_month_payment_status', 1)
+		->get()
+		->row_array();
+		return $q['count'];
+	}
+
 	function record_payment($mysql_data) {
 		return $this->db->insert_batch('payment', $mysql_data);
 	}
 
-	function missed_last_month_count() {
+	function paid_last_month_count() {
 		$query = $this->db->query('SELECT count(*) as count FROM payment WHERE YEAR(timestamp) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) AND MONTH(timestamp) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)');
 		$row = $query->row_array();
 		return $row['count'];

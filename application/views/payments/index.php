@@ -131,7 +131,7 @@
                                         <th>Name</th>
                                         <th>ID Number</th>
                                         <th>Contact No.</th>
-                                        <th>Joined</th>
+                                        <!--th>Joined</th-->
                                         <th>Cover/Plan</th>
                                         <!--th>No. of Dependants</th-->
                                         <th>Plolicy Status</th>
@@ -146,7 +146,7 @@
                                         <th>Name</th>
                                         <th>ID Number</th>
                                         <th>Contact No.</th>
-                                        <th>Joined</th>
+                                        <!--th>Joined</th-->
                                         <th>Cover/Plan</th>
                                         <!--th>No. of Dependents</th-->
                                         <th>Plolicy Status</th>
@@ -162,20 +162,26 @@
                                         <td>{{paid_member.name}} {{paid_member.surname}}</td>
                                         <td>{{paid_member.id_number}}</td>
                                         <td>{{paid_member.cell_number}}</td>
-                                        <td>{{formatDate(paid_member.timestamp) | date:'d MMMM y'}}</td>
+                                        <!--td>{{formatDate(paid_member.timestamp) | date:'d MMMM y'}}</td-->
                                         <!--td>........</td-->
                                         <td>One Plus Nine</td>
                                         <td style="background-color:#5cb85c; color: white; text-align: center;">Paid</td>
                                       </tr>
                                     </tbody>
                                   </table>
+                                  <center>
+                                    <button class="btn btn-default hidden-print" ng-click="print()">
+                                      <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+                                      Print
+                                    </button>
+                                    </center>
                     </div>
                   </div>
               </div>
               </div>
             <div class="tab-pane fade" id="contact">
               <div class="col-md-12">
-                  <center><h4>Still to Pay</h4>
+                  <center><h4>Still to Pay </h4>
                     <button id="post_message" class="btn btn-default btn-xs" type="button" ng-click="">Send Reminder To All</button>
                       <hr/>
                   </center>
@@ -190,7 +196,7 @@
                                   <th>Name</th>
                                   <th>ID Number</th>
                                   <th>Contact No.</th>
-                                  <th>Joined</th>
+                                  <!--th>Joined</th-->
                                   <th>Cover/Plan</th>
                                   <!--th>No. of Dependants</th-->
                                   <th>Plolicy Status</th>
@@ -205,7 +211,7 @@
                                   <th>Name</th>
                                   <th>ID Number</th>
                                   <th>Contact No.</th>
-                                  <th>Joined</th>
+                                  <!--th>Joined</th-->
                                   <th>Cover/Plan</th>
                                   <!--th>No. of Dependents</th-->
                                   <th>Plolicy Status</th>
@@ -221,13 +227,19 @@
                                   <td>{{still_to_pay_member.name}} {{still_to_pay_member.surname}}</td>
                                   <td>{{still_to_pay_member.id_number}}</td>
                                   <td>{{still_to_pay_member.cell_number}}</td>
-                                  <td>{{formatDate(still_to_pay_member.timestamp) | date:'d MMMM y'}}</td>
+                                  <!--td>{{formatDate(still_to_pay_member.timestamp) | date:'d MMMM y'}}</td-->
                                   <!--td>........</td-->
                                   <td>One Plus Nine</td>
                                   <td style="background-color:#f0ad4e; color: white; text-align: center;">Waiting For Payment</td>
                                 </tr>
                               </tbody>
                             </table>
+                            <center>
+                              <button class="btn btn-default hidden-print" ng-click="print()">
+                                <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+                                Print
+                              </button>
+                              </center>
               </div>
             </div>
             </div>
