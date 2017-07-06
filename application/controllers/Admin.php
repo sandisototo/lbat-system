@@ -63,10 +63,11 @@ class Admin extends CI_Controller {
 		$data = array('value' => "Admin not registered");
 		echo json_encode($data);
 	}
+
 	// Edit Admin
-	public function create_admin() {}
+	public function edit_admin() {}
 
 	// Remove Admin
-	public function create_admin() {}
+	public function remove_admin() {}
 
 }
