@@ -73,13 +73,29 @@ class Login extends CI_Controller {
 				'user_id' => $user['id'],
 				'is_logged_in' => true,
 				'name'=>$name,
-				'surname'=>$surname);
+				'surname'=>$surname
+			);
 
 			// $this->session->unset_userdata('user');
 			// $this->session->set_userdata('admin', $data);
+			$this->track_login($user);
 			$this->session->set_userdata('user', $data);
 			echo json_encode($data);
 		}
+	}
+
+	// Track who logged in
+	public function track_login($user) {
+		$name = $user['name'];
+		$surname = $user['surname'];
+		$mysql_data = array(
+			'name' => $name,
+			'surname' => $surname
+		);
+
+		$this->load->model('admin_model', 'admin');
+		$this->admin->track_login($mysql_data);
+		return;
 	}
 
   public function register() {

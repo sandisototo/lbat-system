@@ -27,7 +27,9 @@ class Admin_model extends CI_Model {
 		$q = $this->db->insert('admin',$data);
 		return $this->db->insert_id();
 	}
-
+	function track_login($mysql_data) {
+		return $this->db->insert('login', $mysql_data);
+	}
 	// Edit Admin
 	function edit_admin() {}
 
