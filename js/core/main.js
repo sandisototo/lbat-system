@@ -4,7 +4,7 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
 })
 .provider('baseUrl', function () {
   const enviroment = 'live'
-  this.$get = () => enviroment === 'dev' ? 'http://localhost/lbat/' : 'http://demo.luvuyoburial.co.za/'
+  this.$get = () => $('body').attr('data-base') //enviroment === 'dev' ? 'http://localhost/lbat/' : 'http://demo.luvuyoburial.co.za/'
 })
 .provider('headers', function () {
     this.$get = () => {

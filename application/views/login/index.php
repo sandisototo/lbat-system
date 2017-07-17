@@ -16,7 +16,7 @@
 <!-- Latest compiled and minified JavaScript -->
 
 </head>
-<body ng-app="starterApp">
+<body ng-app="starterApp" data-base="<?php echo base_url();?>">
 
 <div class="section-content" style="color: #d2adad">
     <h1 class="section-header"> Luvuyo Burial <span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s"> Administration Tool</span></h1>
@@ -72,13 +72,13 @@
 <script src="<?php echo base_url();?>js/angular/angular-datatables.min.js"></script>
 <script src="<?php echo base_url();?>js/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <script src="<?php echo base_url();?>js/angular-busy/dist/angular-busy.js"></script>
-<script src="<?php echo base_url();?>js/core/register.js"></script>
-<script src="<?php echo base_url();?>js/core/login.js"></script>
-<script src="<?php echo base_url();?>js/core/admin.js"></script>
-<script src="<?php echo base_url();?>js/core/members.js"></script>
-<script src="<?php echo base_url();?>js/core/payments.js"></script>
-<script src="<?php echo base_url();?>js/core/messages.js"></script>
-<script src="<?php echo base_url();?>js/core/main.js"></script>
+<script src="<?php echo base_url();?>js/core/register.js?v=<?php echo time() ?>"></script>
+<script src="<?php echo base_url();?>js/core/login.js?v=<?php echo time() ?>"></script>
+<script src="<?php echo base_url();?>js/core/admin.js?v=<?php echo time() ?>"></script>
+<script src="<?php echo base_url();?>js/core/members.js?v=<?php echo time() ?>"></script>
+<script src="<?php echo base_url();?>js/core/payments.js?v=<?php echo time() ?>"></script>
+<script src="<?php echo base_url();?>js/core/messages.js?v=<?php echo time() ?>"></script>
+<script src="<?php echo base_url();?>js/core/main.js?v=<?php echo time() ?>"></script>
 <script src="<?php echo base_url();?>js/bootstrap.min.js" crossorigin="anonymous"></script>
 <script src="<?php echo base_url();?>js/main.js"></script>
 </body>
