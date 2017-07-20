@@ -179,7 +179,7 @@
                     <hr/>
                 <!-- Textarea -->
                 <div class="form-group">
-                  <label class="control-label" for="file">File Upload - Optional</label>
+                  <label class="control-label" for="file">Attach a form - Optional</label>
                   <div class="input-group input-file" name="file_upload" model-name="new_member.file_upload">
                       <span class="input-group-btn">
                            <i class="fa fa-cloud-upload"></i>
@@ -335,19 +335,17 @@
                    </div-->
                     <hr/>
                 <div class="form-group">
-                  <div class="row">
-                    <div class="col-md-6">
-                       <label class="control-label" for="file">Existing File</label>
-                    </div>
-                    <div class="col-md-6">
-                        <a ng-if="selected_member.filename != NULL " href="<?php echo base_url(); ?>uploads/{{selected_member.filename}}" download="{{selected_member.filename}}">{{selected_member.filename}}</a>
-                    </div>
+                  <div class="input-group" >
+                    <label class="control-label" for="file">Uploaded Form</label>
+                  
+                      <a ng-if="selected_member.filename != NULL " href="<?php echo base_url(); ?>uploads/{{selected_member.filename}}" download="{{selected_member.filename}}" style="padding-left: 10px" ><button class="btn btn-default "> Download </button></a>
+                   
                   </div>
                 </div>
                 <hr/>
                 
                 <div class="form-group">
-                  <label class="control-label" for="file">File Upload - Optional</label>
+                  <label class="control-label" for="file"> <span ng-if="selected_member.filename != NULL ">Attach a new form</span> <span ng-if="selected_member.filename == NULL ">Attach a form</span>- Optional</label>
                   <div class="input-group input-file" name="file_upload" model-name="selected_member.file_upload">
                       <span class="input-group-btn">
                            <i class="fa fa-cloud-upload"></i>

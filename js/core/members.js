@@ -62,16 +62,13 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     $scope.usersPromise = membersFactory.removeMember(member_id)
     .then((response) => response.data)
     .then((data) => {
-      console.log(data);
-      if (!data) {
+      
+      if (!data || data.error) {
         exrasFactory.displayToast(toastr.error, "Error", "Could not remove this record! Please try again later.")
         return
       }
-      if(data.error){
-          exrasFactory.displayToast(toastr.error, "Error", "Could not remove this record! Please try again later.")
-        return
-      }
-      
+     
+
       if($scope.selected_index !== -1) {
         $scope.all_members.splice($scope.selected_index, 1)
         $scope.selected_index = -1
@@ -131,17 +128,14 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     $scope.usersPromise = membersFactory.editMember(form_data)
     .then((response) => response.data)
     .then((data) => {
-        console.log(data);
-      if (!data) {
-        exrasFactory.displayToast(toastr.error, "Error", "Could not update this record! Make sure all required fields are filled.")
+        
+      if (!data || data.error) {
+        exrasFactory.displayToast(toastr.error, "Error", data.message || "Could not update this record! Make sure all required fields are filled.")
         return
       }
-      if(data.error){
-        exrasFactory.displayToast(toastr.error, "Error", data.message)
-        return
-      }
+     
       $('input[type=file]').val('');
-     member.filename = data.filename;
+      member.filename = data.filename;
       exrasFactory.displayToast(toastr.success, "Success", "Record updated successfully!")
 
     },
@@ -191,14 +185,11 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     .then((response) => response.data)
     .then((data) => {
       console.log(data);
-      if (!data) {
-        exrasFactory.displayToast(toastr.error, "Error", "Could not add this record! Make sure all required fields are filled.")
+      if (!data || data.error) {
+        exrasFactory.displayToast(toastr.error, "Error", data.message || "Could not add this record! Make sure all required fields are filled.")
         return
       }
-      if(data.error){
-        exrasFactory.displayToast(toastr.error, "Error", data.message)
-        return
-      }
+      
       new_member.timestamp = new Date()
       new_member.policy_status = 1
       new_member.filename =data.filename
