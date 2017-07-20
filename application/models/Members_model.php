@@ -68,6 +68,7 @@ class Members_model extends CI_Model {
 		->db
 		->select('*')
 		->from('dependents')
+		->where('member_id !=', 0)
 		->where('member_id', $member_id)
 		->where('status', 1)
 		->get()

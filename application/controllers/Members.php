@@ -67,15 +67,41 @@ class Members extends CI_Controller {
 	// add member
 	public function add() {
 		// Check if posted values are not null
-		if (empty($this->input->post())) {
-			echo json_encode(array('error' => "Missing input post data"));
-			die;
-		}
-		// Check if ID exist first here
+	   $data_input = new StdClass();
 
-		$this->load->model('members_model', 'members');
-		$added = $this->members->add($this->input->post());
-		echo json_encode($added);
+	   foreach ( $this->input->post() as $key => $value) {
+	   		$data_input->$key = $value;
+	   }
+
+	   if (empty($data_input)) {
+			echo json_encode(array('error' => "Missing input post data"));
+
+	    }else{
+	    	$error = false;
+	      	$data_input->filename = NULL;
+	        $file_upload = $this->uploadfile('file_upload');
+			if(is_array($file_upload) && array_key_exists('file_name', $file_upload)){
+				$data_input->filename = $file_upload['file_name'];
+			}
+	        if(isset($_FILES['file_upload']) && $data_input->filename == NULL){
+	        	$error = true;
+	        }
+
+	        if($error == false){
+	        	// Check if ID exist first here
+				$this->load->model('members_model', 'members');
+				$added = $this->members->add($data_input);
+				echo json_encode(['filename'=>$data_input->filename, 'data'=>$added, 'error'=>false]);
+	        }else{
+	        	$file_upload = str_replace("<p>", '', $file_upload);
+			    $file_upload =str_replace("</p>", '', $file_upload);
+	        	echo json_encode(array('message' => $file_upload, 'error' => true));
+	        }
+
+
+
+	    }
+
 	}
 	// Depandants view
 	public function depandants($member_id = 0) {
@@ -92,7 +118,7 @@ class Members extends CI_Controller {
 
 	// add depandant
 	public function add_depandant() {
-		if (empty($this->input->post())) {
+		if (empty($this->input->post()) || !$this->input->post('member_id')) {
 			echo json_encode(array('error' => "Missing input post data"));
 			die;
 		}
@@ -111,6 +137,7 @@ class Members extends CI_Controller {
 	// edit member
 	public function edit() {
 		// Check if posted values are not null
+
 		if (empty($this->input->post())) {
 			echo json_encode(array('error' => "Missing input post data"));
 			die;
@@ -119,14 +146,40 @@ class Members extends CI_Controller {
 		if(!$this->input->post('id')) {
 			redirect('members');
 		}
+		$filename = $this->input->post('filename');
+		$file_upload = $this->uploadfile('file_upload');
+		if(is_array($file_upload) && array_key_exists('file_name', $file_upload)){
+			//deleting the old file
+			$this->fileDelete($filename);
+			$filename = $file_upload['file_name'];
+		}
+		$error = false;
+
+
 		// Take id
 		$member_id = $this->input->post('id');
 		// Then clean up data before posting
 		$mysql_data = $this->cunstruct_mysql_data($this->input->post());
+		if($filename != 'null'){
+			$mysql_data['filename'] = $filename;
+		}else{
+			$mysql_data['filename'] = NULL;
+		}
 
-		$this->load->model('members_model', 'members');
-		$updated = $this->members->edit($member_id, $mysql_data);
-		echo json_encode($updated);
+		if(isset($_FILES['file_upload']) && !is_array($file_upload)){
+	        	$error = true;
+	    }
+
+	    if($error == false){
+
+			 $this->load->model('members_model', 'members');
+			 $updated = $this->members->edit($member_id, $mysql_data);
+			echo json_encode(['data'=>$mysql_data, 'filename'=>$mysql_data['filename'], 'status'=>$updated, 'error'=>false]);
+		}else{
+			$file_upload = str_replace("<p>", '', $file_upload);
+			$file_upload =str_replace("</p>", '', $file_upload);
+			echo json_encode(array('message' => $file_upload, 'error' => true));
+		}
 	}
 
 	// edit member
@@ -155,9 +208,22 @@ class Members extends CI_Controller {
 		if (!$member_id) {
 			redirect('members');
 		}
+
 		$this->load->model('members_model', 'members');
-		$updated = $this->members->remove($member_id);
-		echo json_encode($updated);
+		$member = $this->members->get($member_id);
+		$error = false;
+		if($member['filename'] != ''){
+			$error = $this->fileDelete($member['filename']);
+		}
+		if($error == false){
+			echo json_encode(['error'=>true]);
+		}else{
+			$updated = $this->members->remove($member_id);
+			echo json_encode(['error'=>false]);
+		}
+
+
+
 	}
 
 	// remove depandant
@@ -181,7 +247,46 @@ class Members extends CI_Controller {
 			array_splice($array, 7);
 
 		array_splice($array, 15);
+		$return_array = [];
+		//Fix for data columns with null values
+		foreach ($array as $key => $value) {
+			if($value != 'null'){
+				$return_array[$key] = $value;
+			}else{
+				$return_array[$key] = NULL;
+			}
+		}
+		return $return_array;
+	}
 
-		return $array;
+	private function uploadfile($fieldName){
+		$config['upload_path']          = './uploads/';
+	    $config['allowed_types']        ="pdf|doc|docx|PDF|DOC|DOCX|xls|xlsx";
+	    $config['max_size']             = 200000;
+	    $this->load->library('upload', $config);
+ 		if ( ! $this->upload->do_upload($fieldName))
+		{
+		   return $this->upload->display_errors();
+
+		}
+		else
+		{
+		    return $this->upload->data();
+		}
+	}
+
+	private function fileDelete($fileName){
+		if($fileName !=''){
+			$delete_file = './uploads/'.$fileName;
+			if(file_exists($delete_file)){
+				unlink($delete_file);
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+
 	}
 }

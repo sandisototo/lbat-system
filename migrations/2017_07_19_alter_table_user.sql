@@ -1,0 +1,1 @@
+ALTER TABLE user ADD filename VARCHAR(500) NULL AFTER notes;

@@ -27,9 +27,8 @@ class Site extends CI_Controller {
 	 private function _is_logged_in() {
 		$this->load->model('admin_model', 'admin');
 		$user_session = $this->session->get_userdata();
-		$user_data = $user_session['user'];
-		$is_logged_in = $user_data['is_logged_in'];
-		if(!isset($is_logged_in) || $is_logged_in != true){
+		
+		if(!array_key_exists('user', $user_session) || $user_session['user']['is_logged_in'] != true){
 			redirect('logout');
 		}
 	 }

@@ -22,7 +22,7 @@
 <!-- Latest compiled and minified JavaScript -->
 
 </head>
-<body ng-app="starterApp" ng-controller="MainController">
+<body  ng-app="starterApp" ng-controller="MainController" data-base="<?php echo base_url();?>">
 
         <?php
             $user_session = $this->session->get_userdata();

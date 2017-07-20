@@ -25,8 +25,8 @@
 <script src="<?php echo base_url();?>js/core/login.js"></script>
 <script src="<?php echo base_url();?>js/core/admin.js"></script>
 <script src="<?php echo base_url();?>js/core/payments.js"></script>
-<script src="<?php echo base_url();?>js/core/members.js"></script>
+<script src="<?php echo base_url();?>js/core/members.js?v=<?php echo time(); ?>"></script>
 <script src="<?php echo base_url();?>js/core/messages.js"></script>
-<script src="<?php echo base_url();?>js/core/main.js"></script>
+<script src="<?php echo base_url();?>js/core/main.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
