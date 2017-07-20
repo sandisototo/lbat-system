@@ -42,8 +42,15 @@
                           </button-->
                             <div class="well">
                                 <div class="row">
-                                  <div class="col-md-12" >
-                                    <p style="text-align:center;">Still To Pay</p>
+                                  <div class="col-md-12" style="
+                                  background-color: #F0AD38;
+                                  margin-bottom: 1%;
+                                  color: white;"
+                                  >
+                                    <p style="
+                                    text-align:center;
+                                    margin-top: 2%;
+                                    ">Still to pay</p>
                                   </div>
                                 </div>
                               <div class="row">
@@ -96,8 +103,15 @@
                         <div class="dual-list list-right col-md-5">
                             <div class="well">
                               <div class="row">
-                                  <div class="col-md-12" >
-                                    <p style="text-align:center">Paid</p>
+                                  <div class="col-md-12" style="
+                                  background-color: #4aa54a;
+                                  margin-bottom: 2%;
+                                  color: white;
+                                  ">
+                                    <p style="
+                                    text-align:center;
+                                    margin-top: 2%;";
+                                    >Paid</p>
                                   </div>
                               </div>
                               <center>
