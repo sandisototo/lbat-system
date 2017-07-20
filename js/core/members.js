@@ -1,4 +1,19 @@
 angular.module("members",['toastr','datatables', 'cgBusy'])
+.directive('fileModel', ['$parse', function ($parse) {
+    return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+        var model = $parse(attrs.fileModel);
+        var modelSetter = model.assign;
+
+        element.bind('change', function(){
+            scope.$apply(function(){
+                modelSetter(scope, element[0].files[0]);
+            });
+        });
+    }
+   };
+}])
 .controller("MembersController", ['$http', '$scope', '$window', 'toastr', '$filter', 'membersFactory', 'exrasFactory',
 function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
   console.debug('<----Members Controller----->')
@@ -47,6 +62,7 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     $scope.usersPromise = membersFactory.removeMember(member_id)
     .then((response) => response.data)
     .then((data) => {
+      console.log(data);
       if (!data) {
         exrasFactory.displayToast(toastr.error, "Error", "Could not remove this record! Please try again later.")
         return
@@ -103,15 +119,20 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
       exrasFactory.displayToast(toastr.error, "Error", "Name, Surname or ID number cannot be left blank. Please re-open and and edit again.")
       return false
     }
-
-    $scope.usersPromise = membersFactory.editMember(member)
+    var form_data = new FormData();
+    $.each(member, (i, val)=>{
+      form_data.append(i, val);
+    })
+    $scope.usersPromise = membersFactory.editMember(form_data)
     .then((response) => response.data)
     .then((data) => {
+      
       if (!data) {
         exrasFactory.displayToast(toastr.error, "Error", "Could not update this record! Make sure all required fields are filled.")
         return
       }
-
+      $('input[type=file]').val('');
+      $scope.getAllMembers();
       exrasFactory.displayToast(toastr.success, "Success", "Record updated successfully!")
 
     },
@@ -151,10 +172,16 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
       exrasFactory.displayToast(toastr.error, "Error", "Name, Surname, ID number, Phone number or Address cannot be left blank. Please add new member again.")
       return false
     }
-
-    $scope.usersPromise = membersFactory.addMember(new_member)
+    
+    var form_data = new FormData();
+    $.each(new_member, (i, val)=>{
+      form_data.append(i, val);
+    })
+ 
+    $scope.usersPromise = membersFactory.addMember(form_data)
     .then((response) => response.data)
     .then((data) => {
+      
       if (!data) {
         exrasFactory.displayToast(toastr.error, "Error", "Could not add this record! Make sure all required fields are filled.")
         return
@@ -164,6 +191,8 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
 
       $scope.all_members.push(new_member)
       $scope.new_member = {}
+      $('input[type=file]').val(''); //quick fix file file clear
+      $scope.getAllMembers();
       exrasFactory.displayToast(toastr.success, "Success", "Record added successfully!")
     },
     (error) => {

@@ -179,6 +179,20 @@
                     <hr/>
                 <!-- Textarea -->
                 <div class="form-group">
+                  <label class="control-label" for="file">File Upload - Optional</label>
+                  <div class="input-group input-file" name="file_upload" model-name="new_member.file_upload">
+                      <span class="input-group-btn">
+                           <i class="fa fa-cloud-upload"></i>
+                      </span>
+                      <input type="file" name="file_upload" file-model="new_member.file_upload" class="form-control input-md" />
+                      <span class="input-group-btn">
+                           <button class="btn btn-warning btn-reset" type="button">Reset</button>
+                      </span>
+                    </div>
+                </div>
+               
+                <hr/>
+                <div class="form-group">
                 <label class="control-label" for="Notes (max 200 words)">Notes (max 200 words) - Optional</label>
                  <textarea ng-model="new_member.notes" value="" class="form-control" rows="10"  name="Overview (max 200 words)" placeholder="e.g ID copy missing OR still need to update his payment"></textarea>
                 </div>
@@ -186,7 +200,7 @@
             <div class="modal-footer ">
               <div class="row">
               <div class="col-md-5">
-                <button type="button" class="btn btn-success btn-medium" data-dismiss="modal" ng-click="addMember(new_member)"><span class="glyphicon glyphicon-ok-sign"></span> Add</button>
+                <button type="button" class="btn btn-success btn-medium"  data-dismiss="modal" ng-click="addMember(new_member)"><span class="glyphicon glyphicon-ok-sign"></span> Add</button>
               </div>
               <div class="col-md-5">
                 <button type="button" class="btn btn-danger btn-medium" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
@@ -320,6 +334,32 @@
                      </label>
                    </div-->
                     <hr/>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-6">
+                       <label class="control-label" for="file">Existing File</label>
+                    </div>
+                    <div class="col-md-6">
+                        <a ng-if="selected_member.filename != NULL " href="<?php echo base_url(); ?>uploads/{{selected_member.filename}}" download="{{selected_member.filename}}">{{selected_member.filename}}</a>
+                    </div>
+                  </div>
+                </div>
+                <hr/>
+                
+                <div class="form-group">
+                  <label class="control-label" for="file">File Upload - Optional</label>
+                  <div class="input-group input-file" name="file_upload" model-name="selected_member.file_upload">
+                      <span class="input-group-btn">
+                           <i class="fa fa-cloud-upload"></i>
+                      </span>
+                      <input type="file" name="file_upload" file-model="selected_member.file_upload" class="form-control input-md" />
+                      <span class="input-group-btn">
+                           <button class="btn btn-warning btn-reset" type="button">Reset</button>
+                      </span>
+                    </div>
+                </div>
+                 <hr/>
+               
                 <!-- Textarea -->
                 <div class="form-group">
                 <label class="control-label" for="Notes (max 200 words)">Notes (max 200 words) - Optional</label>
@@ -399,3 +439,10 @@
 <?php
   $this->load->view('includes/footer.php');
 ?>
+<script type="text/javascript">
+$(function() {
+   $("button.btn-reset").click(function(){
+        $('input[type=file]').val('');  
+    });
+});
+</script>

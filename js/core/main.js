@@ -8,7 +8,15 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
 })
 .provider('headers', function () {
     this.$get = () => {
-        return { headers :{ 'Content-Type': 'application/x-www-form-urlencoded' }}
+        return { headers :{ 'Content-Type': 'application/x-www-form-urlencoded'}}
+    }
+})
+.provider('Uploadheader', function () {
+    this.$get = () => {
+        return {
+             transformRequest: angular.identity,
+             headers: {'Content-Type': undefined,'Process-Data': false}
+         }
     }
 })
 .factory('validateFactory', ['$http', 'baseUrl', 'headers', function($http, baseUrl, headers) {
@@ -19,14 +27,14 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
   validateFactory.validateAdmin = (admin) => $http.post(`${baseUrl}login/validate_admin`, $.param(admin), headers)
   return validateFactory
 }])
-.factory('membersFactory', ['$http', 'baseUrl', 'headers', function($http, baseUrl, headers) {
+.factory('membersFactory', ['$http', 'baseUrl', 'headers','Uploadheader', function($http, baseUrl, headers, Uploadheader) {
   console.debug('membersFactory Running')
   let membersFactory = {}
   membersFactory.getMember = (id) => $http.get(`${baseUrl}members/get/${id}`)
   membersFactory.getAllMembers = () => $http.get(`${baseUrl}members/all`)
-  membersFactory.editMember = (member) => $http.post(`${baseUrl}members/edit`, $.param(member), headers)
+  membersFactory.editMember = (member) => $http.post(`${baseUrl}members/edit`, member,Uploadheader)
   membersFactory.editDepandant = (depandant) => $http.post(`${baseUrl}members/edit_depandant`, $.param(depandant), headers)
-  membersFactory.addMember = (member) => $http.post(`${baseUrl}members/add`, $.param(member), headers)
+  membersFactory.addMember = (member) => $http.post(`${baseUrl}members/add`, member, Uploadheader )
   membersFactory.addDepandant = (depandant) => $http.post(`${baseUrl}members/add_depandant`, $.param(depandant), headers)
   membersFactory.getDepandants = (id) => $http.get(`${baseUrl}members/get_depandants/${id}`)
   membersFactory.removeMember = (id) => $http.get(`${baseUrl}members/remove/${id}`)
