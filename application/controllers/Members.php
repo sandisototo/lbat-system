@@ -77,16 +77,29 @@ class Members extends CI_Controller {
 			echo json_encode(array('error' => "Missing input post data"));
 			
 	    }else{
-	      
+	    	$error = false;
+	      	$data_input->filename = NULL;
 	        $file_upload = $this->uploadfile('file_upload');
 			if(is_array($file_upload) && array_key_exists('file_name', $file_upload)){
 				$data_input->filename = $file_upload['file_name']; 
 			}
-	        
-	     	// Check if ID exist first here
-			$this->load->model('members_model', 'members');
-			$added = $this->members->add($data_input);
-			echo json_encode(['data_input'=>$data_input, 'data'=>$added]);
+	        if(isset($_FILES['file_upload']) && $data_input->filename == NULL){
+	        	$error = true;
+	        }
+
+	        if($error == false){
+	        	// Check if ID exist first here
+				$this->load->model('members_model', 'members');
+				$added = $this->members->add($data_input);
+				echo json_encode(['filename'=>$data_input->filename, 'data'=>$added, 'error'=>false]);
+	        }else{
+	        	$file_upload = str_replace("<p>", '', $file_upload);
+			    $file_upload =str_replace("</p>", '', $file_upload);
+	        	echo json_encode(array('message' => $file_upload, 'error' => true));
+	        }
+	     
+
+			
 	    }
 	   
 	}
@@ -129,6 +142,10 @@ class Members extends CI_Controller {
 			echo json_encode(array('error' => "Missing input post data"));
 			die;
 		}
+		//Redirect if id is not set
+		if(!$this->input->post('id')) {
+			redirect('members');
+		}
 		$filename = $this->input->post('filename');
 		$file_upload = $this->uploadfile('file_upload');
 		if(is_array($file_upload) && array_key_exists('file_name', $file_upload)){
@@ -136,11 +153,9 @@ class Members extends CI_Controller {
 			$this->fileDelete($filename);
 			$filename = $file_upload['file_name'];
 		}
+		$error = false;
+  		
 		
-		//Redirect if id is not set
-		if(!$this->input->post('id')) {
-			redirect('members');
-		}
 		// Take id
 		$member_id = $this->input->post('id');
 		// Then clean up data before posting
@@ -151,10 +166,20 @@ class Members extends CI_Controller {
 			$mysql_data['filename'] = NULL;
 		}
 	
-		
-		$this->load->model('members_model', 'members');
-		$updated = $this->members->edit($member_id, $mysql_data);
-		echo json_encode(['origin'=>$this->input->post(), 'new'=>$mysql_data, 'status'=>$updated]);
+		if(isset($_FILES['file_upload']) && !is_array($file_upload)){
+	        	$error = true;
+	    }
+
+	    if($error == false){
+	    	
+			 $this->load->model('members_model', 'members');
+			 $updated = $this->members->edit($member_id, $mysql_data);
+			echo json_encode(['data'=>$mysql_data, 'filename'=>$mysql_data['filename'], 'status'=>$updated, 'error'=>false]);
+		}else{
+			$file_upload = str_replace("<p>", '', $file_upload);
+			$file_upload =str_replace("</p>", '', $file_upload);
+			echo json_encode(array('message' => $file_upload, 'error' => true));
+		}
 	}
 
 	// edit member
@@ -186,12 +211,19 @@ class Members extends CI_Controller {
 
 		$this->load->model('members_model', 'members');
 		$member = $this->members->get($member_id);
-		
-		$updated = $this->members->remove($member_id);
+		$error = false;
 		if($member['filename'] != ''){
-			$this->fileDelete($member['filename']);
+			$error = $this->fileDelete($member['filename']);
 		}
-		echo json_encode($updated);
+		if($error == false){
+			echo json_encode(['error'=>true]);
+		}else{
+			$updated = $this->members->remove($member_id);
+			echo json_encode(['error'=>false]);
+		}
+		
+		
+		
 	}
 
 	// remove depandant
@@ -229,8 +261,8 @@ class Members extends CI_Controller {
 
 	private function uploadfile($fieldName){
 		$config['upload_path']          = './uploads/';
-	    $config['allowed_types']        = 'doc|pdf|docx';
-	    $config['max_size']             = 100;
+	    $config['allowed_types']        ="pdf|doc|docx|PDF|DOC|DOCX|xls|xlsx";
+	    $config['max_size']             = 200000;
 	    $this->load->library('upload', $config);
  		if ( ! $this->upload->do_upload($fieldName))
 		{
@@ -248,7 +280,12 @@ class Members extends CI_Controller {
 			$delete_file = './uploads/'.$fileName;
 			if(file_exists($delete_file)){
 				unlink($delete_file);
+				return true;
+			}else{
+				return false;
 			}
+		}else{
+			return false;
 		}
 		
 	}

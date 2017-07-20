@@ -67,6 +67,11 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
         exrasFactory.displayToast(toastr.error, "Error", "Could not remove this record! Please try again later.")
         return
       }
+      if(data.error){
+          exrasFactory.displayToast(toastr.error, "Error", "Could not remove this record! Please try again later.")
+        return
+      }
+      
       if($scope.selected_index !== -1) {
         $scope.all_members.splice($scope.selected_index, 1)
         $scope.selected_index = -1
@@ -126,19 +131,23 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     $scope.usersPromise = membersFactory.editMember(form_data)
     .then((response) => response.data)
     .then((data) => {
-      
+        console.log(data);
       if (!data) {
         exrasFactory.displayToast(toastr.error, "Error", "Could not update this record! Make sure all required fields are filled.")
         return
       }
+      if(data.error){
+        exrasFactory.displayToast(toastr.error, "Error", data.message)
+        return
+      }
       $('input[type=file]').val('');
-      $scope.getAllMembers();
+     member.filename = data.filename;
       exrasFactory.displayToast(toastr.success, "Success", "Record updated successfully!")
 
     },
     (error) => {
       console.log('error--->', error)
-      exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
+      exrasFactory.displayToast(toastr.error, "Error", error)
     })
   }
 
@@ -181,23 +190,28 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     $scope.usersPromise = membersFactory.addMember(form_data)
     .then((response) => response.data)
     .then((data) => {
-      
+      console.log(data);
       if (!data) {
         exrasFactory.displayToast(toastr.error, "Error", "Could not add this record! Make sure all required fields are filled.")
         return
       }
+      if(data.error){
+        exrasFactory.displayToast(toastr.error, "Error", data.message)
+        return
+      }
       new_member.timestamp = new Date()
       new_member.policy_status = 1
+      new_member.filename =data.filename
 
       $scope.all_members.push(new_member)
       $scope.new_member = {}
       $('input[type=file]').val(''); //quick fix file file clear
-      $scope.getAllMembers();
+      
       exrasFactory.displayToast(toastr.success, "Success", "Record added successfully!")
     },
     (error) => {
       console.log('error--->', error)
-      exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
+      exrasFactory.displayToast(toastr.error, "Error", error)
     })
   }
   // add depandants to a given member object
