@@ -334,7 +334,7 @@
                      </label>
                    </div-->
                     <hr/>
-                <div class="form-group">
+                <div class="form-group" ng-if="selected_member.filename != NULL ">
                   <div class="input-group" >
                     <label class="control-label" for="file">Uploaded Form</label>
                   
@@ -342,7 +342,7 @@
                    
                   </div>
                 </div>
-                <hr/>
+                <hr ng-if="selected_member.filename != NULL "/>
                 
                 <div class="form-group">
                   <label class="control-label" for="file"> <span ng-if="selected_member.filename != NULL ">Attach a new form</span> <span ng-if="selected_member.filename == NULL ">Attach a form</span>- Optional</label>
