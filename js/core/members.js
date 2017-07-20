@@ -62,12 +62,12 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     $scope.usersPromise = membersFactory.removeMember(member_id)
     .then((response) => response.data)
     .then((data) => {
-      
+
       if (!data || data.error) {
         exrasFactory.displayToast(toastr.error, "Error", "Could not remove this record! Please try again later.")
         return
       }
-     
+
 
       if($scope.selected_index !== -1) {
         $scope.all_members.splice($scope.selected_index, 1)
@@ -128,12 +128,12 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     $scope.usersPromise = membersFactory.editMember(form_data)
     .then((response) => response.data)
     .then((data) => {
-        
+
       if (!data || data.error) {
         exrasFactory.displayToast(toastr.error, "Error", data.message || "Could not update this record! Make sure all required fields are filled.")
         return
       }
-     
+
       $('input[type=file]').val('');
       member.filename = data.filename;
       exrasFactory.displayToast(toastr.success, "Success", "Record updated successfully!")
@@ -175,12 +175,12 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
       exrasFactory.displayToast(toastr.error, "Error", "Name, Surname, ID number, Phone number or Address cannot be left blank. Please add new member again.")
       return false
     }
-    
+
     var form_data = new FormData();
     $.each(new_member, (i, val)=>{
       form_data.append(i, val);
     })
- 
+
     $scope.usersPromise = membersFactory.addMember(form_data)
     .then((response) => response.data)
     .then((data) => {
@@ -189,7 +189,7 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
         exrasFactory.displayToast(toastr.error, "Error", data.message || "Could not add this record! Make sure all required fields are filled.")
         return
       }
-      
+
       new_member.timestamp = new Date()
       new_member.policy_status = 1
       new_member.filename =data.filename
@@ -197,7 +197,7 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
       $scope.all_members.push(new_member)
       $scope.new_member = {}
       $('input[type=file]').val(''); //quick fix file file clear
-      
+
       exrasFactory.displayToast(toastr.success, "Success", "Record added successfully!")
     },
     (error) => {
@@ -219,9 +219,11 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
         exrasFactory.displayToast(toastr.error, "Error", "Could not add this record! Make sure all required fields are filled.")
         return
       }
+
       $scope.depandants_list.push(dependant)
       $scope.new_dependent = {}
       exrasFactory.displayToast(toastr.success, "Success", "Record added successfully!")
+      $window.location.reload()
     },(error) => {
       exrasFactory.displayToast(toastr.error, "Error", "Sorry we coudn't process this request! Please try again later")
       console.log(error)
