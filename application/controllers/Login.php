@@ -60,26 +60,31 @@ class Login extends CI_Controller {
 
 		$this->load->model('admin_model', 'admin');
 		$user = $this->admin->validate_admin($username,$password);
-
+		$this->load->library('bcrypt_lib');
 		if (empty($user)) {
 			$data = array('error' => "User Not Found");
 			echo json_encode($data);
-		} else {
-			$name = $user['name'];
-			$surname = $user['surname'];
+		} elseif($this->bcrypt_lib->verify($password, $user['password'])){
+				$name = $user['name'];
+				$surname = $user['surname'];
 
-			$data = array(
-				'user' => $user,
-				'user_id' => $user['id'],
-				'is_logged_in' => true,
-				'name'=>$name,
-				'surname'=>$surname
-			);
+				$data = array(
+					'user' => $user,
+					'user_id' => $user['id'],
+					'is_logged_in' => true,
+					'name'=>$name,
+					'surname'=>$surname
+				);
 
-			// $this->session->unset_userdata('user');
-			// $this->session->set_userdata('admin', $data);
-			$this->track_login($user);
-			$this->session->set_userdata('user', $data);
+				// $this->session->unset_userdata('user');
+				// $this->session->set_userdata('admin', $data);
+				$this->track_login($user);
+				$this->session->set_userdata('user', $data);
+				echo json_encode($data);
+			
+			
+		}else{
+			$data = array('error' => "User Not Found");
 			echo json_encode($data);
 		}
 	}

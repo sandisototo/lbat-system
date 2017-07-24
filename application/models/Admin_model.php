@@ -12,17 +12,19 @@ class Admin_model extends CI_Model {
 		->select('*')
 		->from('admin')
 		->where('username', $username)
-		->where('password', $password)
+		// ->where('password', $password)
 		->get()
 		->row_array();
 	  return $q;
 	}
 
 	function create_admin($user_id,$username,$password) {
+		$this->load->library('bcrypt_lib');
+		
 		$data = array(
 			'user_id'=>$user_id,
 			'username'=>$username,
-			'password'=>$password
+			'password'=>$this->bcrypt_lib->hash($password)
 		);
 		$q = $this->db->insert('admin',$data);
 		return $this->db->insert_id();
@@ -35,4 +37,12 @@ class Admin_model extends CI_Model {
 
 	// Remove Admin
 	function remove_admin() {}
+
+	//for testing please use the below code to create hash for test user passowrd
+	/* 
+	*		$this->load->library('bcrypt_lib');
+	*		$data = $this->bcrypt_lib->hash('test');
+	*		print_r($data);
+	*
+	*/
 }
