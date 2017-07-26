@@ -62,22 +62,23 @@ class Members extends CI_Controller {
 	public function all() {
 		$this->load->model('members_model', 'members');
 		$members = $this->members->all();
-		echo json_encode($members);
+		return $this->output
+        		->set_output(json_encode($members));
 	}
 	// add member
 	public function add() {
-		// Check if posted values are not null
-	   $data_input = new StdClass();
+		
+		if($this->validatefrom()){ //validation
+			$error = str_replace('<p>', ' ', str_replace('</p>', ' ', validation_errors()));
+			return $this->output
+        		->set_output(json_encode(array('error' => true, 'message'=> $error)));
+		}else{
+			$data_input = new StdClass();
 
-	   foreach ( $this->input->post() as $key => $value) {
-	   		$data_input->$key = $value;
-	   }
-
-	   if (empty($data_input)) {
-			echo json_encode(array('error' => "Missing input post data"));
-
-	    }else{
-	    	$error = false;
+	   		foreach ( $this->input->post() as $key => $value) {
+	   			$data_input->$key = $value;
+	   		}
+	   		$error = false;
 	      	$data_input->filename = NULL;
 	        $file_upload = $this->uploadfile('file_upload');
 			if(is_array($file_upload) && array_key_exists('file_name', $file_upload)){
@@ -91,16 +92,17 @@ class Members extends CI_Controller {
 	        	// Check if ID exist first here
 				$this->load->model('members_model', 'members');
 				$added = $this->members->add($data_input);
-				echo json_encode(['filename'=>$data_input->filename, 'data'=>$added, 'error'=>false]);
+				return $this->output
+        				->set_output(json_encode(array('error' => false, 'filename'=>$data_input->filename, 'data'=>$added)));
 	        }else{
 	        	$file_upload = str_replace("<p>", '', $file_upload);
 			    $file_upload =str_replace("</p>", '', $file_upload);
-	        	echo json_encode(array('message' => $file_upload, 'error' => true));
+	        	return $this->output
+        				->set_output(json_encode(array('error' => true, 'message'=>  $file_upload)));
 	        }
-
-
-
-	    }
+			
+		}
+	
 
 	}
 	// Depandants view
@@ -137,49 +139,54 @@ class Members extends CI_Controller {
 	// edit member
 	public function edit() {
 		// Check if posted values are not null
-
-		if (empty($this->input->post())) {
-			echo json_encode(array('error' => "Missing input post data"));
-			die;
-		}
-		//Redirect if id is not set
-		if(!$this->input->post('id')) {
+		if($this->validatefrom()){ //validation
+			$error = str_replace('<p>', ' ', str_replace('</p>', ' ', validation_errors()));
+			return $this->output
+        		->set_output(json_encode(array('error' => true, 'message'=> $error)));
+		}elseif(!$this->input->post('id')){
 			redirect('members');
-		}
-		$filename = $this->input->post('filename');
-		$file_upload = $this->uploadfile('file_upload');
-		if(is_array($file_upload) && array_key_exists('file_name', $file_upload)){
-			//deleting the old file
-			$this->fileDelete($filename);
-			$filename = $file_upload['file_name'];
-		}
-		$error = false;
-
-
-		// Take id
-		$member_id = $this->input->post('id');
-		// Then clean up data before posting
-		$mysql_data = $this->cunstruct_mysql_data($this->input->post());
-		if($filename != 'null'){
-			$mysql_data['filename'] = $filename;
 		}else{
-			$mysql_data['filename'] = NULL;
+			$filename = $this->input->post('filename');
+			$file_upload = $this->uploadfile('file_upload');
+			if(is_array($file_upload) && array_key_exists('file_name', $file_upload)){
+				//deleting the old file
+				$this->fileDelete($filename);
+				$filename = $file_upload['file_name'];
+			}
+			$error = false;
+
+
+			// Take id
+			$member_id = $this->input->post('id');
+			// Then clean up data before posting
+			$mysql_data = $this->cunstruct_mysql_data($this->input->post());
+			if($filename != 'null'){
+				$mysql_data['filename'] = $filename;
+			}else{
+				$mysql_data['filename'] = NULL;
+			}
+
+			if(isset($_FILES['file_upload']) && !is_array($file_upload)){
+		        	$error = true;
+		    }
+
+		    if($error == false){
+
+				$this->load->model('members_model', 'members');
+				$updated = $this->members->edit($member_id, $mysql_data);
+				return $this->output
+        				->set_output(json_encode(['data'=>$mysql_data, 'filename'=>$mysql_data['filename'], 'status'=>$updated, 'error'=>false]));
+			}else{
+				$file_upload = str_replace("<p>", '', $file_upload);
+				$file_upload =str_replace("</p>", '', $file_upload);
+				return $this->output
+        				->set_output(json_encode(array('message' => $file_upload, 'error' => true)));
+				
+			}
 		}
-
-		if(isset($_FILES['file_upload']) && !is_array($file_upload)){
-	        	$error = true;
-	    }
-
-	    if($error == false){
-
-			 $this->load->model('members_model', 'members');
-			 $updated = $this->members->edit($member_id, $mysql_data);
-			echo json_encode(['data'=>$mysql_data, 'filename'=>$mysql_data['filename'], 'status'=>$updated, 'error'=>false]);
-		}else{
-			$file_upload = str_replace("<p>", '', $file_upload);
-			$file_upload =str_replace("</p>", '', $file_upload);
-			echo json_encode(array('message' => $file_upload, 'error' => true));
-		}
+		
+		
+		
 	}
 
 	// edit member
@@ -289,4 +296,21 @@ class Members extends CI_Controller {
 		}
 
 	}
+	
+	private function validatefrom(){
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('name', 'Full name', 'required');
+        $this->form_validation->set_rules('surname', 'Surname', 'required');
+        $this->form_validation->set_rules('id_number', 'ID Number', 'required');
+
+        if ($this->form_validation->run() == FALSE)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+	}
+
 }

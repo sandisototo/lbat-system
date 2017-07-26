@@ -118,7 +118,7 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
   // edit/update a given member object
   $scope.editMember = (member) => {
     if (!$scope.inputForm.$valid) {
-      exrasFactory.displayToast(toastr.error, "Error", "Name, Surname or ID number cannot be left blank. Please re-open and and edit again.")
+      exrasFactory.displayToast(toastr.error, "Error", "Name, Surname or ID number cannot be left blank.")
       return false
     }
     var form_data = new FormData();
@@ -133,9 +133,9 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
         exrasFactory.displayToast(toastr.error, "Error", data.message || "Could not update this record! Make sure all required fields are filled.")
         return
       }
-
-      $('input[type=file]').val('');
-      member.filename = data.filename;
+      $('#edit').modal('hide')
+      $('input[type=file]').val('')
+      member.filename = data.filename
       exrasFactory.displayToast(toastr.success, "Success", "Record updated successfully!")
 
     },
@@ -172,7 +172,7 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
   // add member
   $scope.addMember = (new_member) => {
     if (!$scope.newInputForm.$valid) {
-      exrasFactory.displayToast(toastr.error, "Error", "Name, Surname, ID number, Phone number or Address cannot be left blank. Please add new member again.")
+      exrasFactory.displayToast(toastr.error, "Error", "Name, Surname or ID number cannot be left blank.")
       return false
     }
 
@@ -184,20 +184,19 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
     $scope.usersPromise = membersFactory.addMember(form_data)
     .then((response) => response.data)
     .then((data) => {
-      console.log(data);
       if (!data || data.error) {
         exrasFactory.displayToast(toastr.error, "Error", data.message || "Could not add this record! Make sure all required fields are filled.")
         return
       }
-
+      $('#add').modal('hide')
       new_member.timestamp = new Date()
       new_member.policy_status = 1
       new_member.filename =data.filename
 
       $scope.all_members.push(new_member)
       $scope.new_member = {}
-      $('input[type=file]').val(''); //quick fix file file clear
-
+      $('input[type=file]').val('') //quick fix file file clear
+     
       exrasFactory.displayToast(toastr.success, "Success", "Record added successfully!")
     },
     (error) => {
