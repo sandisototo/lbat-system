@@ -45,4 +45,20 @@ class Admin_model extends CI_Model {
 	*		print_r($data);
 	*
 	*/
+
+	function get_all() {
+		
+		$query = $this->db->get('admin');
+        $q = $query->result_array();
+	  return $q;
+	}
+
+	function updatePassword($user){
+		
+		$this->load->library('bcrypt_lib');
+		$data = $this->bcrypt_lib->hash($user['password']);
+		$this->db->where('id',$user['id']);
+		$query = ['password'=>$data];
+		return $this->db->update('admin', $query);
+	}
 }
