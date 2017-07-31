@@ -88,7 +88,9 @@ class Members_model extends CI_Model {
 
 	function add($new_member)
 	{
-			return $this->db->insert('user', $new_member);
+		$added = $this->db->insert('user', $new_member);
+		$insert_id = $this->db->insert_id();
+		return  $insert_id;
 	}
 
 	function add_depandant($new_dependent)
