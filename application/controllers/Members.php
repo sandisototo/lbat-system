@@ -67,43 +67,43 @@ class Members extends CI_Controller {
 	}
 	// add member
 	public function add() {
-		
-		if($this->validatefrom()){ //validation
+		if ($this->validateMemberform()) { //validation
 			$error = str_replace('<p>', ' ', str_replace('</p>', ' ', validation_errors()));
-			return $this->output
-        		->set_output(json_encode(array('error' => true, 'message'=> $error)));
-		}else{
+			return $this->output->set_output(json_encode(array('error' => true, 'message'=> $error)));
+		} else {
 			$data_input = new StdClass();
+ 			foreach ( $this->input->post() as $key => $value) {
+	   		$data_input->$key = $value;
+	   	}
 
-	   		foreach ( $this->input->post() as $key => $value) {
-	   			$data_input->$key = $value;
-	   		}
-	   		$error = false;
-	      	$data_input->filename = NULL;
-	        $file_upload = $this->uploadfile('file_upload');
-			if(is_array($file_upload) && array_key_exists('file_name', $file_upload)){
+   		$error = false;
+      $data_input->filename = NULL;
+      $file_upload = $this->uploadfile('file_upload');
+
+			if (is_array($file_upload) && array_key_exists('file_name', $file_upload)) {
 				$data_input->filename = $file_upload['file_name'];
 			}
-	        if(isset($_FILES['file_upload']) && $data_input->filename == NULL){
-	        	$error = true;
-	        }
 
-	        if($error == false){
-	        	// Check if ID exist first here
+			if (isset($_FILES['file_upload']) && $data_input->filename == NULL) {
+	      $error = true;
+	    }
+
+	    if (!$error) {
+	      // Check if ID exist first here
 				$this->load->model('members_model', 'members');
-				$added = $this->members->add($data_input);
-				return $this->output
-        				->set_output(json_encode(array('error' => false, 'filename'=>$data_input->filename, 'data'=>$added)));
-	        }else{
-	        	$file_upload = str_replace("<p>", '', $file_upload);
-			    $file_upload =str_replace("</p>", '', $file_upload);
-	        	return $this->output
-        				->set_output(json_encode(array('error' => true, 'message'=>  $file_upload)));
-	        }
-			
-		}
-	
+				$last_insert_id = $this->members->add($data_input);
+				if ($last_insert_id) {
+					return $this->output->set_output(json_encode(array('error' => false, 'filename'=>$data_input->filename, 'member'=> array('id' => $last_insert_id))));
+				} else {
+					return $this->output->set_output(json_encode(array('error' => true, 'filename'=>$data_input->filename, 'message'=>'There was an error executing mySql in add() method of Members Controller')));
+				}
 
+	    } else {
+        $file_upload = str_replace("<p>", '', $file_upload);
+		    $file_upload =str_replace("</p>", '', $file_upload);
+	      return $this->output->set_output(json_encode(array('error' => true, 'message'=>  $file_upload)));
+	    }
+		}
 	}
 	// Depandants view
 	public function depandants($member_id = 0) {
@@ -139,7 +139,7 @@ class Members extends CI_Controller {
 	// edit member
 	public function edit() {
 		// Check if posted values are not null
-		if($this->validatefrom()){ //validation
+		if($this->validateMemberform()){ //validation
 			$error = str_replace('<p>', ' ', str_replace('</p>', ' ', validation_errors()));
 			return $this->output
         		->set_output(json_encode(array('error' => true, 'message'=> $error)));
@@ -160,33 +160,28 @@ class Members extends CI_Controller {
 			$member_id = $this->input->post('id');
 			// Then clean up data before posting
 			$mysql_data = $this->cunstruct_mysql_data($this->input->post());
-			if($filename != 'null'){
+			if ($filename != 'null') {
 				$mysql_data['filename'] = $filename;
-			}else{
+			} else {
 				$mysql_data['filename'] = NULL;
 			}
 
-			if(isset($_FILES['file_upload']) && !is_array($file_upload)){
-		        	$error = true;
-		    }
+			if (isset($_FILES['file_upload']) && !is_array($file_upload)) {
+		   	$error = true;
+		  }
 
-		    if($error == false){
+	    if (!$error) {
+			$this->load->model('members_model', 'members');
+			$updated = $this->members->edit($member_id, $mysql_data);
 
-				$this->load->model('members_model', 'members');
-				$updated = $this->members->edit($member_id, $mysql_data);
-				return $this->output
-        				->set_output(json_encode(['data'=>$mysql_data, 'filename'=>$mysql_data['filename'], 'status'=>$updated, 'error'=>false]));
-			}else{
+			return $this->output->set_output(json_encode(['data'=>$mysql_data, 'filename'=>$mysql_data['filename'], 'status'=>$updated, 'error'=>false]));
+			} else {
 				$file_upload = str_replace("<p>", '', $file_upload);
 				$file_upload =str_replace("</p>", '', $file_upload);
-				return $this->output
-        				->set_output(json_encode(array('message' => $file_upload, 'error' => true)));
-				
+
+				return $this->output->set_output(json_encode(array('message' => $file_upload, 'error' => true)));
 			}
 		}
-		
-		
-		
 	}
 
 	// edit member
@@ -219,18 +214,16 @@ class Members extends CI_Controller {
 		$this->load->model('members_model', 'members');
 		$member = $this->members->get($member_id);
 		$error = false;
-		if($member['filename'] != ''){
+		if ($member['filename'] != '') {
 			$error = $this->fileDelete($member['filename']);
 		}
-		if($error == false){
+
+		if ($error == false) {
 			echo json_encode(['error'=>true]);
-		}else{
+		} else {
 			$updated = $this->members->remove($member_id);
 			echo json_encode(['error'=>false]);
 		}
-
-
-
 	}
 
 	// remove depandant
@@ -248,12 +241,11 @@ class Members extends CI_Controller {
 
 	private function cunstruct_mysql_data($array) {
 		// Then remove id from the list of columns to be updated
-		array_shift($array);
+		unset($array['id']);
 		// remove other uneccessary keys
-		if (count($array) <= 9)
-			array_splice($array, 7);
+		unset($array['$$hashKey']);
+		unset($array[0]);
 
-		array_splice($array, 15);
 		$return_array = [];
 		//Fix for data columns with null values
 		foreach ($array as $key => $value) {
@@ -266,7 +258,7 @@ class Members extends CI_Controller {
 		return $return_array;
 	}
 
-	private function uploadfile($fieldName){
+	private function uploadfile($fieldName) {
 		$config['upload_path']          = './uploads/';
 	    $config['allowed_types']        ="pdf|doc|docx|PDF|DOC|DOCX|xls|xlsx";
 	    $config['max_size']             = 200000;
@@ -282,35 +274,26 @@ class Members extends CI_Controller {
 		}
 	}
 
-	private function fileDelete($fileName){
-		if($fileName !=''){
+	private function fileDelete($fileName) {
+		if ($fileName !='') {
 			$delete_file = './uploads/'.$fileName;
-			if(file_exists($delete_file)){
+			if (file_exists($delete_file)) {
 				unlink($delete_file);
 				return true;
-			}else{
+			} else {
 				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}
-
 	}
-	
-	private function validatefrom(){
+
+	private function validateMemberform() {
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('name', 'Full name', 'required');
-        $this->form_validation->set_rules('surname', 'Surname', 'required');
-        $this->form_validation->set_rules('id_number', 'ID Number', 'required');
+    $this->form_validation->set_rules('surname', 'Surname', 'required');
+    $this->form_validation->set_rules('id_number', 'ID Number', 'required');
 
-        if ($this->form_validation->run() == FALSE)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+		return !$this->form_validation->run() ? true : false;
 	}
-
 }

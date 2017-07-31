@@ -176,7 +176,7 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
       return false
     }
 
-    var form_data = new FormData();
+    var form_data = new FormData()
     $.each(new_member, (i, val)=>{
       form_data.append(i, val);
     })
@@ -188,15 +188,18 @@ function($http, $scope, $window, toastr, $filter, membersFactory, exrasFactory){
         exrasFactory.displayToast(toastr.error, "Error", data.message || "Could not add this record! Make sure all required fields are filled.")
         return
       }
+
       $('#add').modal('hide')
+
+      new_member.id = data.member.id
       new_member.timestamp = new Date()
       new_member.policy_status = 1
-      new_member.filename =data.filename
+      new_member.filename = data.filename
 
       $scope.all_members.push(new_member)
       $scope.new_member = {}
       $('input[type=file]').val('') //quick fix file file clear
-     
+
       exrasFactory.displayToast(toastr.success, "Success", "Record added successfully!")
     },
     (error) => {
