@@ -35,7 +35,7 @@ class Script extends CI_Controller {
 	 		
 	 	}
 		return $this->output
-        		->set_output(json_encode(array('error' => true, 'message'=> $updates)));
+        		->set_output(json_encode(array('success' => true, 'message'=> $updates)));
 	 }
 
 	 
