@@ -42,22 +42,20 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
     }
   }
 })
-.directive('maxlength', function() {
+.directive('idlength', function() {
   const regex = /^(\d+)$/
   return {
     require: 'ngModel',
-    scope:{
-      accept:"="
-    },
+    
     link: function(scope, el, attrs, ctrl) {
      
-      ctrl.$validators.maxlength = (modelValue, viewValue) =>{
+      ctrl.$validators.idlength = (modelValue, viewValue) =>{
         
         if( typeof viewValue !== 'undefined' && viewValue !=''){
             let inputName   = $("input[name='"+el[0].name+"']" )
-          
-            if ( viewValue.length > parseInt(scope.accept) ) {
-              let val = inputName.val().slice(0, parseInt(scope.accept))
+           
+            if ( viewValue.length > 13 ) {
+              let val = inputName.val().trim().slice(0, 13)
               inputName.val(val)
               return false
             } else {

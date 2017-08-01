@@ -35,15 +35,17 @@
        </div>
 
          <!-- Text input-->
-         <div class="form-group" ng-class="{'has-error': inputForm.id_number.$dirty && inputForm.id_number.$error.number || inputForm.id_number.$error.maxlength}">
+         <div class="form-group" ng-class="{'has-error': inputForm.id_number.$dirty && inputForm.id_number.$error.number || inputForm.id_number.$error.idlength}">
          <label class="control-label" for="Citizenship No.">ID Number.</label>
          <div class="input-group">
              <div class="input-group-addon">
                <i class="fa fa-sticky-note-o"></i>
              </div>
-             <input name="id_number" ng-model="selected_member.id_number" value="{{selected_member.id_number}}" type="text" placeholder="ID Number." class="form-control input-md" ng-required="true" maxlength="13" number>
+             <input name="id_number" ng-model="selected_member.id_number" value="{{selected_member.id_number}}" type="text" placeholder="ID Number." class="form-control input-md" ng-required="true" idlength number>
             </div>
-             <p class="help-block" ng-if="inputForm.id_number.$error.number">Please enter a number and Only 13 numbers are allowed</p>
+             <p class="help-block" ng-if="inputForm.id_number.$error.number">Please enter a number</p>
+             <p class="help-block" ng-if="inputForm.id_number.$error.idlength">Only 13 numbers are allowed</p>
+             
          </div>
 
            <!-- Text input-->

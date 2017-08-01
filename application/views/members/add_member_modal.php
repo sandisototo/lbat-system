@@ -33,16 +33,18 @@
        </div>
 
          <!-- Text input-->
-         <div class="form-group" ng-class="{'has-error': newInputForm.id_number.$dirty && newInputForm.id_number.$error.number || newInputForm.id_number.$error.maxlength}">
+         <div class="form-group" ng-class="{'has-error': newInputForm.id_number.$dirty && newInputForm.id_number.$error.number || newInputForm.id_number.$error.idlength}">
          <label class="control-label" for="Citizenship No.">ID Number.</label>
          <div class="input-group">
              <div class="input-group-addon">
                <i class="fa fa-sticky-note-o"></i>
              </div>
-             <input name="id_number" ng-model="new_member.id_number" value="" type="text" placeholder="ID Number." class="form-control input-md" ng-required="true" maxlength="13" number>
+             <input name="id_number" ng-model="new_member.id_number" value="" type="text" placeholder="ID Number." class="form-control input-md" ng-required="true" idlength number>
              
             </div>
-            <p class="help-block" ng-if="newInputForm.id_number.$error.number">Please enter a number and Only 13 numbers are allowed</p>
+            <p class="help-block" ng-if="newInputForm.id_number.$error.number">Please enter a number</p>
+            <p class="help-block" ng-if="newInputForm.id_number.$error.idlength">Only 13 numbers are allowed</p>
+            
          </div>
 
              <!-- Multiple Radios (inline) -->
