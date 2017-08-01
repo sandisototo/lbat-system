@@ -21,10 +21,7 @@ class Script extends CI_Controller {
 
 	 public function __construct() {
  	 	parent::__construct();
-		
 	 }
-
-	
 
 	 public function index() {
 	 	$this->load->model('admin_model', 'admin');
@@ -32,12 +29,8 @@ class Script extends CI_Controller {
 	 	$updates = [];
 	 	foreach ($admin as $user) {
 	 		$updates[] = $this->admin->updatePassword($user);
-	 		
 	 	}
-		return $this->output
-        		->set_output(json_encode(array('error' => true, 'message'=> $updates)));
+		
+		return $this->output->set_output(json_encode(array('error' => true, 'message'=> $updates)));
 	 }
-
-	 
 }
- 
