@@ -7,29 +7,42 @@
        </div>
    <div class="modal-body">
      <form name="newInputForm">
-       <div class="form-group">
+       <div class="form-group" ng-class="{'has-error': newInputForm.name.$dirty && newInputForm.name.$error.string || newInputForm.surname.$dirty 
+       && newInputForm.surname.$error.string}">
        <label class="control-label" for="Name (Full name)">Name (Full name) & Surname</label>
        <div class="input-group">
-           <div class="input-group-addon">
+           <div class="input-group-addon" >
             <i class="fa fa-user">
             </i>
            </div>
-           <input id="name"  name="name" type="text" ng-model="new_member.name" placeholder="Full name" class="form-control input-md" ng-required="true" >
-                  <div class="input-group-addon">
+           <input id="name"  name="name" type="text" ng-model="new_member.name" placeholder="Full name" class="form-control input-md" ng-required="true" string>
+           <div class="input-group-addon">
            </div>
-           <input  id="surname" name="surname" type="text" ng-model="new_member.surname" placeholder="Surname" class="form-control input-md" ng-required="true" >
+           <input  id="surname" name="surname" type="text" ng-model="new_member.surname" placeholder="Surname" class="form-control input-md" ng-required="true" string>
           </div>
+          <div class="row">
+             <div class="col-md-6">
+                <p class="help-block" ng-if="newInputForm.name.$error.string">Please enter letters only for Name</p>
+             </div>
+             <div class="col-md-6">
+               <p class="help-block" ng-if="newInputForm.surname.$error.string">Please enter letters only For Surname</p>
+             </div>
+          </div>
+         
+          
        </div>
 
          <!-- Text input-->
-         <div class="form-group">
+         <div class="form-group" ng-class="{'has-error': newInputForm.id_number.$dirty && newInputForm.id_number.$error.number || newInputForm.id_number.$error.maxlength}">
          <label class="control-label" for="Citizenship No.">ID Number.</label>
          <div class="input-group">
              <div class="input-group-addon">
                <i class="fa fa-sticky-note-o"></i>
              </div>
-             <input name="id_number" ng-model="new_member.id_number" value="" type="text" placeholder="ID Number." class="form-control input-md" ng-required="true" >
+             <input name="id_number" ng-model="new_member.id_number" value="" type="text" placeholder="ID Number." class="form-control input-md" ng-required="true" maxlength="13" number>
+             
             </div>
+            <p class="help-block" ng-if="newInputForm.id_number.$error.number">Please enter a number and Only 13 numbers are allowed</p>
          </div>
 
              <!-- Multiple Radios (inline) -->
@@ -122,7 +135,7 @@
            <div class="modal-footer ">
              <div class="row">
              <div class="col-md-5">
-               <button type="button" class="btn btn-success btn-medium"  ng-click="addMember(new_member)"><span class="glyphicon glyphicon-ok-sign"></span> Add</button>
+               <button type="button" class="btn btn-success btn-medium" ng-disabled="newInputForm.$invalid"  ng-click="addMember(new_member)"><span class="glyphicon glyphicon-ok-sign"></span> Add</button>
              </div>
              <div class="col-md-5">
                <button type="button" class="btn btn-danger btn-medium" data-dismiss="modal"  ><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>

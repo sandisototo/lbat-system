@@ -30,7 +30,7 @@ class Script extends CI_Controller {
 	 	foreach ($admin as $user) {
 	 		$updates[] = $this->admin->updatePassword($user);
 	 	}
-		
-		return $this->output->set_output(json_encode(array('error' => true, 'message'=> $updates)));
+
+		return $this->output->set_output(json_encode(array('success' => true, 'message'=> $updates)));
 	 }
 }
