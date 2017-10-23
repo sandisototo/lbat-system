@@ -11,29 +11,41 @@
        </div>
    <div class="modal-body">
      <form name="inputForm">
-       <div class="form-group">
+       <div class="form-group" ng-class="{'has-error': inputForm.name.$dirty && inputForm.name.$error.string || inputForm.surname.$dirty 
+       && inputForm.surname.$error.string}">
        <label class="control-label" for="Name (Full name)">Name (Full name) & Surname</label>
        <div class="input-group">
            <div class="input-group-addon">
             <i class="fa fa-user">
             </i>
            </div>
-           <input  name="name" type="text" ng-model="selected_member.name" placeholder="{{selected_member.name}}" class="form-control input-md" ng-required="true">
-                  <div class="input-group-addon">
+           <input  name="name" type="text" ng-model="selected_member.name" placeholder="{{selected_member.name}}" class="form-control input-md" ng-required="true" string>
+                  <div class="input-group-addon" >
            </div>
-           <input  name="surname" type="text" ng-model="selected_member.surname" placeholder="{{selected_member.surname}}" class="form-control input-md" ng-required="true">
+           <input  name="surname" type="text" ng-model="selected_member.surname" placeholder="{{selected_member.surname}}" class="form-control input-md" ng-required="true" string>
+          </div>
+          <div class="row">
+             <div class="col-md-6">
+                <p class="help-block" ng-if="inputForm.name.$error.string">Please enter letters only for Name</p>
+             </div>
+             <div class="col-md-6">
+               <p class="help-block" ng-if="inputForm.surname.$error.string">Please enter letters only For Surname</p>
+             </div>
           </div>
        </div>
 
          <!-- Text input-->
-         <div class="form-group">
+         <div class="form-group" ng-class="{'has-error': inputForm.id_number.$dirty && inputForm.id_number.$error.number || inputForm.id_number.$error.idlength}">
          <label class="control-label" for="Citizenship No.">ID Number.</label>
          <div class="input-group">
              <div class="input-group-addon">
                <i class="fa fa-sticky-note-o"></i>
              </div>
-             <input name="id_number" ng-model="selected_member.id_number" value="{{selected_member.id_number}}" type="text" placeholder="ID Number." class="form-control input-md" ng-required="true">
+             <input name="id_number" ng-model="selected_member.id_number" value="{{selected_member.id_number}}" type="text" placeholder="ID Number." class="form-control input-md" ng-required="true" idlength number>
             </div>
+             <p class="help-block" ng-if="inputForm.id_number.$error.number">Please enter a number</p>
+             <p class="help-block" ng-if="inputForm.id_number.$error.idlength">Only 13 numbers are allowed</p>
+             
          </div>
 
            <!-- Text input-->
@@ -135,7 +147,7 @@
            <div class="modal-footer">
              <div class="row">
              <div class="col-md-5">
-               <button type="button" class="btn btn-success btn-medium" ng-click="editMember(selected_member)"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+               <button type="button" class="btn btn-success btn-medium" ng-disabled="inputForm.$invalid" ng-click="editMember(selected_member)"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
              </div>
              <div class="col-md-5">
                <button type="button" class="btn btn-danger btn-medium" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>

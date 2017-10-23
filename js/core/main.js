@@ -19,6 +19,77 @@ angular.module('starterApp', ['login', 'admin', 'payments', , 'messages', 'membe
          }
     }
 })
+.directive('number', function() {
+  const regex = /^(\d+)$/
+  return {
+    require: 'ngModel',
+    link: function(scope, el, attrs, ctrl) {
+
+      ctrl.$validators.number = (modelValue, viewValue) =>{
+        
+        if( typeof viewValue !== 'undefined' && viewValue !=''){
+            let inputName   = $("input[name='"+el[0].name+"']" )
+            if ( !regex.test(viewValue) ) {
+                let val = viewValue.match(/\d+/)
+                inputName.val(val)
+               return false
+              } else {
+                return true
+              }
+
+        }
+      }
+    }
+  }
+})
+.directive('idlength', function() {
+  const regex = /^(\d+)$/
+  return {
+    require: 'ngModel',
+    
+    link: function(scope, el, attrs, ctrl) {
+     
+      ctrl.$validators.idlength = (modelValue, viewValue) =>{
+        
+        if( typeof viewValue !== 'undefined' && viewValue !=''){
+            let inputName   = $("input[name='"+el[0].name+"']" )
+           
+            if ( viewValue.length > 13 ) {
+              let val = inputName.val().trim().slice(0, 13)
+              inputName.val(val)
+              return false
+            } else {
+              return true
+            }
+        }
+      }
+    }
+  }
+})
+.directive('string', function() {
+  const regex = /^[a-zA-Z()]+$/
+  return {
+    require: 'ngModel',
+    link: function(scope, el, attrs, ctrl) {
+
+      ctrl.$validators.string = (modelValue, viewValue) =>{
+        
+        if( typeof viewValue !== 'undefined' && viewValue !=''){
+            let inputName   = $("input[name='"+el[0].name+"']" )
+            if ( !regex.test(viewValue) ) {
+              let val = viewValue.match(/[a-zA-Z]+/g)
+              inputName.val(val)
+              return false
+            } else {
+              return true
+            }
+
+        }
+      }
+    }
+  }
+})
+
 .factory('validateFactory', ['$http', 'baseUrl', 'headers', function($http, baseUrl, headers) {
   console.debug('validateFactory Running')
   let validateFactory = {}
